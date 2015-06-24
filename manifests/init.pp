@@ -83,13 +83,13 @@ class postfix (
 
   # Main configuration file
   file { '/etc/postfix/main.cf':
-    ensure   => 'file',
-    owner    => 'root',
-    group    => 'root',
-    mode     => '0644',
-    audit    => 'content',
-    notify   => Service['postfix'],
-    require  => Package['postfix']
+    ensure  => 'file',
+    owner   => 'root',
+    group   => 'root',
+    mode    => '0644',
+    audit   => 'content',
+    notify  => Service['postfix'],
+    require => Package['postfix']
   }
 
   file { '/etc/postfix/master.cf':

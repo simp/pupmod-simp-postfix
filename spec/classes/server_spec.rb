@@ -33,7 +33,7 @@ describe 'postfix::server' do
     it {
       expect {
         should compile.with_all_deps
-      }.to raise_error(Puppet::Error,/does not contain '#{err}'/)
+      }.to raise_error(/does not contain '#{err}'/)
     }
   end
 
