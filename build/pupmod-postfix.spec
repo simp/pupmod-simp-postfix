@@ -1,13 +1,14 @@
 Summary: Postfix Puppet Module
 Name: pupmod-postfix
 Version: 4.1.0
-Release: 4
+Release: 5
 License: Apache License, Version 2.0
 Group: Applications/System
 Source: %{name}-%{version}-%{release}.tar.gz
 Buildroot: %{_tmppath}/%{name}-%{version}-%{release}-buildroot
 Requires: pupmod-common >= 2.1.2-2
-Requires: pupmod-concat >= 2.0.0-0
+Requires: pupmod-simplib >= 1.0.0-0
+Requires: pupmod-simpcat >= 2.0.0-0
 Requires: pupmod-iptables >= 2.0.0-0
 Requires: pupmod-rsync >= 2.0.0-0
 Requires: puppet >= 3.3.0
@@ -61,6 +62,9 @@ fi
 # Post uninstall stuff
 
 %changelog
+* Mon Nov 09 2015 Chris Tessmer <chris.tessmer@onypoint.com> - 4.1.0-5
+- migration to simplib and simpcat (lib/ only)
+
 * Thu Feb 19 2015 Trevor Vaughan <tvaughan@onyxpoint.com> - 4.1.0-4
 - Migrated to the new 'simp' environment.
 
@@ -157,7 +161,7 @@ fi
 - Added a conf::main_cf::set define that calls the postconf application to set
   any value in main.cf that you like.
 
-* Mon Dec 04 2009 Maintenance
+* Fri Dec 04 2009 Maintenance
 0.1-9
 - Removed dependence on rsync.
 - Added templates for files that should be templated.
