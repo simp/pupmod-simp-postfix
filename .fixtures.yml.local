@@ -5,7 +5,6 @@ fixtures:
     auditd: "#{source_dir}/../auditd"
     augeasproviders_core: "#{source_dir}/../augeasproviders_core"
     augeasproviders_grub: "#{source_dir}/../augeasproviders_grub"
-    common: "#{source_dir}/../common"
     simplib: "#{source_dir}/../simplib"
     simpcat: "#{source_dir}/../concat"
     iptables: "#{source_dir}/../iptables"
