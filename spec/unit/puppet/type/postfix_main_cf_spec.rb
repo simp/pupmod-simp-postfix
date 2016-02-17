@@ -19,7 +19,7 @@ describe Puppet::Type.type(:postfix_main_cf) do
   end
 
   it 'should notify Service[postfix]' do
-    postfix_main_cf[:notify].map{|x| x = x.to_s}.should include('Service[postfix]')
+    expect(postfix_main_cf[:notify].map{|x| x = x.to_s}).to include('Service[postfix]')
   end
 
   it 'should notify Service[postfix] if passed another notify parameter' do
@@ -29,6 +29,6 @@ describe Puppet::Type.type(:postfix_main_cf) do
       :notify => 'Service[test]'
     )
 
-    postfix_main_cf[:notify].map{|x| x = x.to_s}.should include('Service[postfix]')
+    expect(postfix_main_cf[:notify].map{|x| x = x.to_s}).to include('Service[postfix]')
   end
 end

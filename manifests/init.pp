@@ -17,6 +17,7 @@
 class postfix (
   $enable_server = false
 ) {
+  validate_bool($enable_server)
 
   if $enable_server { include 'postfix::server' }
 
@@ -227,6 +228,4 @@ mailboxes `echo -n "+ "; find ~/Maildir -type d -name ".*" -printf "+\'%f\' "`
     shell      => '/sbin/nologin',
     require    => Package['postfix']
   }
-
-  validate_bool($enable_server)
 }
