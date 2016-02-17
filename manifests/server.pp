@@ -70,6 +70,15 @@ class postfix::server (
   $mandatory_ciphers = 'high',
   $enable_simp_pki = true
 ) {
+  validate_array($inet_interfaces)
+  validate_bool($enable_iptables)
+  validate_net_list($client_nets)
+  validate_bool($enable_user_connect)
+  validate_bool($enable_tls)
+  validate_bool($enforce_tls)
+  validate_array_member($mandatory_ciphers,['export','low','medium','high','null'])
+  validate_bool($enable_simp_pki)
+
   include 'postfix'
 
   # Don't do any of this if we're just listening on localhost.
@@ -81,12 +90,14 @@ class postfix::server (
     if $enable_iptables {
       include 'iptables'
 
+      $_dports      = $enable_user_connect ? {
+        true    => ['25','587'],
+        default => '25'
+      }
+
       ::iptables::add_tcp_stateful_listen { 'allow_postfix':
         client_nets => $client_nets,
-        dports      => $enable_user_connect ? {
-          true    => ['25','587'],
-          default => '25'
-        }
+        dports      => $_dports
       }
     }
 
@@ -122,14 +133,5 @@ class postfix::server (
         }
       }
     }
-
-    validate_array($inet_interfaces)
-    validate_bool($enable_iptables)
-    validate_net_list($client_nets)
-    validate_bool($enable_user_connect)
-    validate_bool($enable_tls)
-    validate_bool($enforce_tls)
-    validate_array_member($mandatory_ciphers,['export','low','medium','high','null'])
-    validate_bool($enable_simp_pki)
   }
 }

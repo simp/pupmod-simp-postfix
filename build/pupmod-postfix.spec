@@ -1,12 +1,11 @@
 Summary: Postfix Puppet Module
 Name: pupmod-postfix
 Version: 4.1.0
-Release: 5
+Release: 6
 License: Apache License, Version 2.0
 Group: Applications/System
 Source: %{name}-%{version}-%{release}.tar.gz
 Buildroot: %{_tmppath}/%{name}-%{version}-%{release}-buildroot
-Requires: pupmod-common >= 2.1.2-2
 Requires: pupmod-simplib >= 1.0.0-0
 Requires: pupmod-simpcat >= 2.0.0-0
 Requires: pupmod-iptables >= 2.0.0-0
@@ -62,8 +61,11 @@ fi
 # Post uninstall stuff
 
 %changelog
+* Mon Feb 16 2016 Chris Tessmer <chris.tessmer@onypoint.com> - 4.1.0-6
+- Removed common dependency (simplib takes care of it)
+
 * Mon Nov 09 2015 Chris Tessmer <chris.tessmer@onypoint.com> - 4.1.0-5
-- migration to simplib and simpcat (lib/ only)
+- Migration to simplib and simpcat (lib/ only)
 
 * Thu Feb 19 2015 Trevor Vaughan <tvaughan@onyxpoint.com> - 4.1.0-4
 - Migrated to the new 'simp' environment.
