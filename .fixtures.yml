@@ -9,5 +9,6 @@ fixtures:
     iptables: "git://github.com/simp/pupmod-simp-iptables"
     pki: "git://github.com/simp/pupmod-simp-pki"
     stdlib: "git://github.com/simp/puppetlabs-stdlib"
+    compliance: "https://github.com/trevor-vaughan/pupmod-compliance"
   symlinks:
     postfix: "#{source_dir}"

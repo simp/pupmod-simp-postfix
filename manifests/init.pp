@@ -18,6 +18,7 @@ class postfix (
   $enable_server = false
 ) {
   validate_bool($enable_server)
+  compliance_map()
 
   if $enable_server { include 'postfix::server' }
 

@@ -1,7 +1,7 @@
 Summary: Postfix Puppet Module
 Name: pupmod-postfix
 Version: 4.1.0
-Release: 6
+Release: 7
 License: Apache License, Version 2.0
 Group: Applications/System
 Source: %{name}-%{version}-%{release}.tar.gz
@@ -15,6 +15,7 @@ Requires: puppetlabs-stdlib
 Buildarch: noarch
 Requires: simp-bootstrap >= 4.2.0
 Obsoletes: pupmod-postfix-test
+Requires: pupmod-onyxpoint-compliance_markup
 
 Prefix: /etc/puppet/environments/simp/modules
 
@@ -61,7 +62,10 @@ fi
 # Post uninstall stuff
 
 %changelog
-* Mon Feb 16 2016 Chris Tessmer <chris.tessmer@onypoint.com> - 4.1.0-6
+* Tue Feb 23 2016 Ralph Wright <ralph.wright@onyxpoint.com> - 4.1.0-7
+- Added compliance function support
+
+* Mon Feb 15 2016 Chris Tessmer <chris.tessmer@onypoint.com> - 4.1.0-6
 - Removed common dependency (simplib takes care of it)
 
 * Mon Nov 09 2015 Chris Tessmer <chris.tessmer@onypoint.com> - 4.1.0-5

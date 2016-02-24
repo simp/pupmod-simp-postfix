@@ -79,6 +79,8 @@ class postfix::server (
   validate_array_member($mandatory_ciphers,['export','low','medium','high','null'])
   validate_bool($enable_simp_pki)
 
+  compliance_map()
+
   include 'postfix'
 
   # Don't do any of this if we're just listening on localhost.
