@@ -49,6 +49,11 @@
 # Default: 'high'
 #   The ciphers that must be used for TLS connections.
 #
+# [*use_haveged*]
+# Type: boolean
+# Default: true
+#   If true, include haveged to assist with entropy generation.
+#
 # [*enable_simp_pki*]
 # Type: Boolean
 # Default: 'true'
@@ -68,6 +73,7 @@ class postfix::server (
   $enable_tls = true,
   $enforce_tls = true,
   $mandatory_ciphers = 'high',
+  $use_haveged = true,
   $enable_simp_pki = true
 ) {
   validate_array($inet_interfaces)
@@ -78,6 +84,7 @@ class postfix::server (
   validate_bool($enforce_tls)
   validate_array_member($mandatory_ciphers,['export','low','medium','high','null'])
   validate_bool($enable_simp_pki)
+  validate_bool($use_haveged)
 
   compliance_map()
 
@@ -104,6 +111,11 @@ class postfix::server (
     }
 
     if $enable_tls {
+
+      if $use_haveged {
+        include "::haveged"
+      }
+
       postfix_main_cf { 'smtp_use_tls': value => 'yes' }
 
       if $enforce_tls {

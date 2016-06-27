@@ -1,7 +1,7 @@
 Summary: Postfix Puppet Module
 Name: pupmod-postfix
-Version: 4.1.0
-Release: 7
+Version: 4.1.1
+Release: 0
 License: Apache License, Version 2.0
 Group: Applications/System
 Source: %{name}-%{version}-%{release}.tar.gz
@@ -62,6 +62,9 @@ fi
 # Post uninstall stuff
 
 %changelog
+* Mon Jun 27 2016 Nick Markowski <nmarkowski@keywcorp.com> - 4.1.1-0
+- Pupmod-haveged included by default to assist with entropy generation.
+
 * Tue Feb 23 2016 Ralph Wright <ralph.wright@onyxpoint.com> - 4.1.0-7
 - Added compliance function support
 

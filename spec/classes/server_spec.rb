@@ -21,16 +21,17 @@ describe 'postfix::server' do
         it { is_expected.to create_postfix_main_cf('smtp_enforce_tls') }
         it { is_expected.to create_postfix_main_cf('smtp_tls_mandatory_ciphers').with({ 'value' => 'high' }) }
         it { is_expected.to contain_pki__copy('/etc/postfix').that_notifies('Service[postfix]') }
+        it { is_expected.to contain_class('haveged') }
       end
 
       context 'mandatory_cipher_validation' do
         err = 'bad stuff'
         let(:params){{ :mandatory_ciphers => err }}
-        it {
+        it 'does not contain mendatory ciphers' do
           expect {
             is_expected.to compile.with_all_deps
           }.to raise_error(/does not contain '#{err}'/)
-        }
+        end
       end
 
       context 'just_localhost' do
@@ -44,6 +45,7 @@ describe 'postfix::server' do
         it { is_expected.not_to create_postfix_main_cf('smtp_enforce_tls') }
         it { is_expected.not_to create_postfix_main_cf('smtp_tls_mandatory_ciphers').with({ 'value' => 'high' }) }
         it { is_expected.not_to contain_pki__copy('/etc/postfix').that_notifies('Service[postfix]') }
+        it { is_expected.to_not contain_class('haveged') }
       end
 
       context 'no_iptables' do
@@ -76,6 +78,7 @@ describe 'postfix::server' do
         it { is_expected.not_to create_postfix_main_cf('smtp_enforce_tls') }
         it { is_expected.not_to create_postfix_main_cf('smtp_tls_mandatory_ciphers').with({ 'value' => 'high' }) }
         it { is_expected.not_to contain_pki__copy('/etc/postfix').that_notifies('Service[postfix]') }
+        it { is_expected.to_not contain_class('haveged') }
       end
 
       context 'no_enforce_tls' do
@@ -89,6 +92,7 @@ describe 'postfix::server' do
         it { is_expected.not_to create_postfix_main_cf('smtp_enforce_tls') }
         it { is_expected.to create_postfix_main_cf('smtp_tls_mandatory_ciphers').with({ 'value' => 'high' }) }
         it { is_expected.to contain_pki__copy('/etc/postfix').that_notifies('Service[postfix]') }
+        it { is_expected.to contain_class('haveged') }
       end
 
       context 'no_enable_simp_pki' do
@@ -102,6 +106,21 @@ describe 'postfix::server' do
         it { is_expected.to create_postfix_main_cf('smtp_enforce_tls') }
         it { is_expected.to create_postfix_main_cf('smtp_tls_mandatory_ciphers').with({ 'value' => 'high' }) }
         it { is_expected.not_to contain_pki__copy('/etc/postfix').that_notifies('Service[postfix]') }
+        it { is_expected.to contain_class('haveged') }
+      end
+
+      context 'with use_haveged => false' do
+        let(:params) {{:use_haveged => false}}
+        it { is_expected.to_not contain_class('haveged') }
+      end
+
+      context 'with invalid input' do
+        let(:params) {{:use_haveged => 'invalid_input'}}
+        it 'with use_haveged as a string' do
+          expect {
+            is_expected.to compile
+          }.to raise_error(RSpec::Expectations::ExpectationNotMetError,/invalid_input" is not a boolean/)
+        end
       end
     end
   end
