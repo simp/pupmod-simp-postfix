@@ -9,6 +9,7 @@ Buildroot: %{_tmppath}/%{name}-%{version}-%{release}-buildroot
 Requires: pupmod-simplib >= 1.0.0-0
 Requires: pupmod-simpcat >= 2.0.0-0
 Requires: pupmod-iptables >= 2.0.0-0
+Requires: pupmod-haveged >= 0.3.0
 Requires: pupmod-rsync >= 2.0.0-0
 Requires: puppet >= 3.3.0
 Requires: puppetlabs-stdlib

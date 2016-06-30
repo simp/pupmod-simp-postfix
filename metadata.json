@@ -10,7 +10,7 @@
   "tags": [ "simp", "postfix" ],
   "dependencies": [
     {
-      "name": "simp/haveged",
+      "name": "simp/puppet-haveged",
       "version_requirement": ">= 0.3.0 < 1.0.0"
     },
     {
