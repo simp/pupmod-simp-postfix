@@ -73,7 +73,7 @@ class postfix::server (
   $enable_tls = true,
   $enforce_tls = true,
   $mandatory_ciphers = 'high',
-  $use_haveged = true,
+  $use_haveged = defined('$::use_haveged') ? { true => getvar('::use_haveged'), default => hiera('use_haveged', true) },
   $enable_simp_pki = true
 ) {
   validate_array($inet_interfaces)
