@@ -1,6 +1,6 @@
 Summary: Postfix Puppet Module
 Name: pupmod-postfix
-Version: 4.1.1
+Version: 4.1.2
 Release: 0
 License: Apache License, Version 2.0
 Group: Applications/System
@@ -9,6 +9,7 @@ Buildroot: %{_tmppath}/%{name}-%{version}-%{release}-buildroot
 Requires: pupmod-simplib >= 1.0.0-0
 Requires: pupmod-simpcat >= 2.0.0-0
 Requires: pupmod-iptables >= 2.0.0-0
+Requires: pupmod-haveged >= 0.3.0
 Requires: pupmod-rsync >= 2.0.0-0
 Requires: puppet >= 3.3.0
 Requires: puppetlabs-stdlib
@@ -62,6 +63,9 @@ fi
 # Post uninstall stuff
 
 %changelog
+* Thu Jun 30 2016 Nick Markowski <nmarkowski@keywcorp.com> - 4.1.2-0
+- Use_haveged is now a global catalyst.
+
 * Mon Jun 27 2016 Nick Markowski <nmarkowski@keywcorp.com> - 4.1.1-0
 - Pupmod-haveged included by default to assist with entropy generation.
 
