@@ -1,8 +1,8 @@
-Requires: pupmod-simplib >= 1.0.0-0
-Requires: pupmod-simpcat >= 2.0.0-0
-Requires: pupmod-iptables >= 2.0.0-0
 Requires: pupmod-haveged >= 0.3.0
+Requires: pupmod-iptables >= 2.0.0-0
 Requires: pupmod-rsync >= 2.0.0-0
+Requires: pupmod-simp-compliance_markup
+Requires: pupmod-simpcat >= 2.0.0-0
+Requires: pupmod-simplib >= 1.0.0-0
 Requires: puppetlabs-stdlib
-Requires: pupmod-onyxpoint-compliance_markup
 Obsoletes: pupmod-postfix-test >= 0.0.1
