@@ -81,11 +81,11 @@ end
 RSpec.configure do |c|
   # If nothing else...
   c.default_facts = {
-    :osfamily                 => 'Debian',
-    :operatingsystem          => 'Debian',
-    :haveged_startup_provider => 'init',
-    :path                     => '/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin',
-    :concat_basedir           => '/tmp'
+    :production => {
+      #:fqdn           => 'production.rspec.test.localdomain',
+      :path           => '/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin',
+      :concat_basedir => '/tmp'
+    }
   }
 
   c.mock_framework = :rspec
