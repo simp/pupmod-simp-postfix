@@ -12,7 +12,7 @@ describe 'postfix' do
         it { is_expected.to contain_simp_file_line('/root/.bashrc') }
         it { is_expected.to contain_exec('postalias').that_requires('Package[postfix]') }
         it { is_expected.to contain_exec('postalias').that_subscribes_to('File[/etc/aliases]') }
-        it { is_expected.to contain_file('/etc/aliases').that_subscribes_to('Concat_build[postfix]') }
+        it { is_expected.to contain_file('/etc/aliases').that_subscribes_to('Simpcat_build[postfix]') }
         it { is_expected.to contain_package('postfix') }
         it { is_expected.to contain_package('mutt') }
         it { is_expected.to contain_user('postfix') }
