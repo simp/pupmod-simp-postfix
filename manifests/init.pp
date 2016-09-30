@@ -36,12 +36,12 @@ class postfix (
     require     => Package['postfix']
   }
 
-  concat_build { 'postfix':
+  simpcat_build { 'postfix':
     order  => ['*.alias'],
     target => '/etc/aliases'
   }
 
-  concat_fragment { 'postfix+0.alias':
+  simpcat_fragment { 'postfix+0.alias':
     content => template('postfix/aliases.erb')
   }
 
@@ -79,7 +79,7 @@ class postfix (
     group     => 'root',
     mode      => '0644',
     require   => Package['postfix'],
-    subscribe => Concat_build['postfix'],
+    subscribe => Simpcat_build['postfix'],
     audit     => content
   }
 
