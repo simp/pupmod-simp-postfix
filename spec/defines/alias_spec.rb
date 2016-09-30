@@ -5,7 +5,7 @@ describe 'postfix::alias' do
   let(:params) {{ :values => 'test test' }}
 
   it do
-    is_expected.to contain_concat_fragment("postfix+#{title}.alias").with({
+    is_expected.to contain_simpcat_fragment("postfix+#{title}.alias").with({
       'content' => "#{title}: #{params[:values]}\n"
     })
   end

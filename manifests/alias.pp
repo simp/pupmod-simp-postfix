@@ -21,7 +21,7 @@
 define postfix::alias (
     $values
   ){
-  concat_fragment { "postfix+${name}.alias":
+  simpcat_fragment { "postfix+${name}.alias":
     content => "${name}: ${values}\n"
   }
 }

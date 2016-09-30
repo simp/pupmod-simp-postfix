@@ -2,5 +2,5 @@ Requires: pupmod-simp-compliance_markup
 Requires: pupmod-simp-haveged >= 0.3.0
 Requires: pupmod-simp-iptables >= 2.0.0-0
 Requires: pupmod-simp-rsync >= 2.0.0-0
-Requires: pupmod-simp-simpcat >= 2.0.0-0
+Requires: pupmod-simp-simpcat >= 6.0.0-0
 Obsoletes: pupmod-postfix-test >= 0.0.1
