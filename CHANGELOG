@@ -1,4 +1,8 @@
-* Fri Sep 30 2016 Trevor Vaughan <tvaughan@onyxpoint.com> - 5.1.0-0
+* Thu Nov 10 2016 Liz Nemsick <lnemsick.simp@gmail.com> - 5.0.0-0
+- Eliminated use of deprecated Puppet.newtype
+- Updated to compliance_markup version 2
+
+* Fri Sep 30 2016 Trevor Vaughan <tvaughan@onyxpoint.com> - 5.0.0-0
 - Updated to use the version of 'simpcat' that does not conflict with
   'puppetlabs/concat'.
 

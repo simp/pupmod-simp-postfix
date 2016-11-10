@@ -8,12 +8,17 @@ fixtures:
     augeasproviders_grub:
       repo: "https://github.com/simp/augeasproviders_grub"
       branch: "simp-master"
-    compliance_markup: "https://github.com/simp/pupmod-simp-compliance_markup"
+    compliance_markup:
+      repo: "https://github.com/simp/pupmod-simp-compliance_markup"
+      branch: "master"
+#      branch: "1.0.2"
     haveged:
       repo: "https://github.com/simp/puppet-haveged"
       branch: "simp-master"
     iptables: "https://github.com/simp/pupmod-simp-iptables"
+    logrotate: "https://github.com/simp/pupmod-simp-logrotate"
     pki: "https://github.com/simp/pupmod-simp-pki"
+    rsyslog: "https://github.com/simp/pupmod-simp-rsyslog"
     simpcat: "https://github.com/simp/pupmod-simp-simpcat"
     simplib: "https://github.com/simp/pupmod-simp-simplib"
     stdlib:

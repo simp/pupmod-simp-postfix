@@ -86,8 +86,6 @@ class postfix::server (
   validate_bool($enable_simp_pki)
   validate_bool($use_haveged)
 
-  compliance_map()
-
   include 'postfix'
 
   # Don't do any of this if we're just listening on localhost.
