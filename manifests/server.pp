@@ -111,7 +111,7 @@ class postfix::server (
     if $enable_tls {
 
       if $use_haveged {
-        include "::haveged"
+        include '::haveged'
       }
 
       postfix_main_cf { 'smtp_use_tls': value => 'yes' }
