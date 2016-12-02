@@ -1,6 +1,6 @@
 {
   "name": "simp-postfix",
-  "version": "5.0.0",
+  "version": "5.0.1",
   "author": "SIMP Team",
   "summary": "Manages the Postfix mail server",
   "license": "Apache-2.0",
@@ -21,10 +21,6 @@
     },
     {
       "name": "simp/iptables",
-      "version_requirement": ">= 5.0.0 < 6.0.0"
-    },
-    {
-      "name": "simp/rsync",
       "version_requirement": ">= 5.0.0 < 6.0.0"
     },
     {
