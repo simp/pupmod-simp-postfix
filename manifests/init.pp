@@ -1,23 +1,14 @@
-# == Class: postfix
-#
 # Set up the postfix mail server.
 # This also aliases 'mail' to 'mutt' for root.
 #
-# == Parameters
-#
-# [*enable_server*]
-# Type: Boolean
-# Default: 'false'
+# @param enable_server
 #   Whether or not to enable the *externally facing* server.
 #
-# == Authors
-#
-# * Trevor Vaughan <tvaughan@onyxpoint.com>
+# @author Trevor Vaughan <tvaughan@onyxpoint.com>
 #
 class postfix (
-  $enable_server = false
+  Boolean $enable_server = false
 ) {
-  validate_bool($enable_server)
 
   if $enable_server { include 'postfix::server' }
 
