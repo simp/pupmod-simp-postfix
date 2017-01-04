@@ -30,7 +30,7 @@ describe 'postfix::server' do
         it 'does not contain mendatory ciphers' do
           expect {
             is_expected.to compile.with_all_deps
-          }.to raise_error(/.*got '#{err}'.*/)
+          }.to raise_error(/got '#{err}'/)
         end
       end
 
