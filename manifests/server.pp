@@ -34,23 +34,34 @@
 # @param haveged
 #   If true, include haveged to assist with entropy generation.
 #
-# @param enable_simp_pki
-#   Whether or not to use the SIMP PKI module.
-#   If you don't do this, you're on your own with how you incorporate
-#   PKI into the Postfix server for TLS.
+# @param pki
+#   If simp, include SIMP's ::pki module and use pki::copy to manage certs
+#   If true, don't include SIMP's ::pki module, but still use pki::copy
+#   If false, don't include SIMP's ::pki module, and don't use pki::copy
+#
+# @param app_pki_external_source
+#   Where to copy certs from for TLS.
+#
+# @param app_pki_dir
+#   Where to copy certs to for TLS.
 #
 # @author Trevor Vaughan <tvaughan@onyxpoint.com>
 #
 class postfix::server (
-  Array[String]       $inet_interfaces     = ['all'],
-  Boolean             $firewall            = simplib::lookup('simp_options::firewall', { 'default_value' => false }),
-  Simplib::Netlist    $trusted_nets        = simplib::lookup('simp_options::trusted_nets', { 'default_value' => ['127.0.0.1'] }),
-  Boolean             $enable_user_connect = true,
-  Boolean             $enable_tls          = true,
-  Boolean             $enforce_tls         = true,
-  Postfix::ManCiphers $mandatory_ciphers   = 'high',
-  Boolean             $haveged             = simplib::lookup('simp_options::haveged', { 'default_value' => false }),
-  Boolean             $enable_simp_pki     = true
+  Array[String]                  $inet_interfaces         = ['all'],
+  Boolean                        $firewall                = simplib::lookup('simp_options::firewall', { 'default_value'     => false }),
+  Simplib::Netlist               $trusted_nets            = simplib::lookup('simp_options::trusted_nets', { 'default_value' => ['127.0.0.1'] }),
+  Boolean                        $enable_user_connect     = true,
+  Boolean                        $enable_tls              = true,
+  Boolean                        $enforce_tls             = true,
+  Postfix::ManCiphers            $mandatory_ciphers       = 'high',
+  Boolean                        $haveged                 = simplib::lookup('simp_options::haveged', { 'default_value'      => false }),
+  Stdlib::Absolutepath           $app_pki_dir             = '/etc/postfix',
+  Stdlib::Absolutepath           $app_pki_external_source = simplib::lookup('simp_options::pki::source', { 'default_value'  => '/etc/simp/pki' }),
+  Stdlib::Absolutepath           $app_pki_key             = "${app_pki_dir}/pki/private/${facts['fqdn']}.pem",
+  Stdlib::Absolutepath           $app_pki_cert            = "${app_pki_dir}/pki/public/${facts['fqdn']}.pub",
+  Stdlib::Absolutepath           $app_pki_ca_dir          = "${app_pki_dir}/pki/cacerts",
+  Variant[Enum['simp'],Boolean]  $pki                     = simplib::lookup('simp_options::pki', { 'default_value'          => false })
 ) {
   validate_net_list($trusted_nets)
 
@@ -87,26 +98,33 @@ class postfix::server (
 
       postfix_main_cf { 'smtp_tls_mandatory_ciphers': value => $mandatory_ciphers }
 
-      if $enable_simp_pki {
-        include '::pki'
-        pki::copy { '/etc/postfix':
+      postfix_main_cf { 'smtp_tls_CApath':
+        value   => $app_pki_ca_dir,
+      }
+
+      postfix_main_cf { 'smtp_tls_cert_file':
+        value   => $app_pki_cert,
+      }
+
+      postfix_main_cf { 'smtp_tls_key_file':
+        value   => $app_pki_key,
+      }
+
+      if $pki {
+        pki::copy { $app_pki_dir:
+          pki    => $pki,
+          source => $app_pki_external_source,
           group  => 'postfix',
           notify => Service['postfix']
         }
-
-        postfix_main_cf { 'smtp_tls_CApath':
-          value   => '/etc/postfix/pki/cacerts',
-          require => Pki::Copy['/etc/postfix']
-        }
-
-        postfix_main_cf { 'smtp_tls_cert_file':
-          value   => "/etc/postfix/pki/public/${facts['fqdn']}.pub",
-          require => Pki::Copy['/etc/postfix']
-        }
-
-        postfix_main_cf { 'smtp_tls_key_file':
-          value   => "/etc/postfix/pki/private/${facts['fqdn']}.pem",
-          require => Pki::Copy['/etc/postfix']
+      }
+      else {
+        file { "${app_pki_dir}/pki":
+          ensure => 'directory',
+          owner  => 'root',
+          group  => 'root',
+          mode   => '0640',
+          source => $app_pki_external_source
         }
       }
     }

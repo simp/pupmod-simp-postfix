@@ -3,15 +3,20 @@ require 'spec_helper_acceptance'
 test_name 'postfix'
 
 describe 'postfix' do
-  let(:manifest) {
-    <<-EOS
-      include '::postfix'
-    EOS
-  }
-
   hosts.each do |host|
+
     context "basic postfix install" do
+      let(:manifest) {
+        <<-EOS
+          include '::postfix'
+        EOS
+      }
+      let(:hieradata) {{
+        'postfix::server::app_pki_external_source' => '/etc/pki/simp-testing/pki/'
+      }}
+
       it 'should work with no errors' do
+        set_hieradata_on(host, hieradata)
         apply_manifest_on(host, manifest, :catch_failures => true)
       end
 
