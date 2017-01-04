@@ -1,3 +1,7 @@
+* Web Jan 04 2017 Nick Miller <nick.miller@onyxpoint.com> - 5.0.1-0
+- Strong type module
+- Use simp_options catalyst lookups and parameter names
+
 * Tue Nov 22 2016 Chris Tessmer <chris.tessmer@onyxpoint.com> - 5.0.0-0
 - Minor cleanup
 
