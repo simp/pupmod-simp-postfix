@@ -24,16 +24,6 @@ describe 'postfix::server' do
         it { is_expected.not_to contain_class('haveged') }
       end
 
-      context 'mandatory_cipher_validation' do
-        err = 'bad stuff'
-        let(:params){{ :mandatory_ciphers => err }}
-        it 'does not contain mendatory ciphers' do
-          expect {
-            is_expected.to compile.with_all_deps
-          }.to raise_error(/got '#{err}'/)
-        end
-      end
-
       context 'just_localhost' do
         let(:params){{ :inet_interfaces => ['localhost'] }}
 
