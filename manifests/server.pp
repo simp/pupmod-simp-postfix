@@ -35,15 +35,37 @@
 #   If true, include haveged to assist with entropy generation.
 #
 # @param pki
-#   If simp, include SIMP's ::pki module and use pki::copy to manage certs
-#   If true, don't include SIMP's ::pki module, but still use pki::copy
-#   If false, don't include SIMP's ::pki module, and don't use pki::copy
+#   * If 'simp', include SIMP's pki module and use pki::copy to manage
+#     application certs in /etc/pki/simp_apps/postfix/pki
+#   * If true, do *not* include SIMP's pki module, but still use pki::copy
+#     to manage certs in /etc/pki/simp_apps/postfix/pki
+#   * If false, do not include SIMP's pki module and do not use pki::copy
+#     to manage certs.  You will need to appropriately assign a subset of:
+#     * app_pki_dir
+#     * app_pki_key
+#     * app_pki_cert
+#     * app_pki_ca
+#     * app_pki_ca_dir
 #
 # @param app_pki_external_source
-#   Where to copy certs from for TLS.
+#   * If pki = 'simp' or true, this is the directory from which certs will be
+#     copied, via pki::copy.  Defaults to /etc/pki/simp.
+#
+#   * If pki = false, this variable has no effect.
 #
 # @param app_pki_dir
-#   Where to copy certs to for TLS.
+#   This variable controls the basepath of $app_pki_key, $app_pki_cert,
+#   $app_pki_ca, $app_pki_ca_dir, and $app_pki_crl.
+#   It defaults to /etc/pki/simp_apps/postfix/pki.
+#
+# @param app_pki_key
+#   Path and name of the private SSL key file
+#
+# @param app_pki_cert
+#   Path and name of the public SSL certificate
+#
+# @param app_pki_ca_dir
+#   Path to the CA.
 #
 # @author Trevor Vaughan <tvaughan@onyxpoint.com>
 #
@@ -56,12 +78,12 @@ class postfix::server (
   Boolean                        $enforce_tls             = true,
   Postfix::ManCiphers            $mandatory_ciphers       = 'high',
   Boolean                        $haveged                 = simplib::lookup('simp_options::haveged', { 'default_value'      => false }),
-  Stdlib::Absolutepath           $app_pki_dir             = '/etc/postfix',
+  Variant[Enum['simp'],Boolean]  $pki                     = simplib::lookup('simp_options::pki', { 'default_value'          => false }),
   Stdlib::Absolutepath           $app_pki_external_source = simplib::lookup('simp_options::pki::source', { 'default_value'  => '/etc/simp/pki' }),
-  Stdlib::Absolutepath           $app_pki_key             = "${app_pki_dir}/pki/private/${facts['fqdn']}.pem",
-  Stdlib::Absolutepath           $app_pki_cert            = "${app_pki_dir}/pki/public/${facts['fqdn']}.pub",
-  Stdlib::Absolutepath           $app_pki_ca_dir          = "${app_pki_dir}/pki/cacerts",
-  Variant[Enum['simp'],Boolean]  $pki                     = simplib::lookup('simp_options::pki', { 'default_value'          => false })
+  Stdlib::Absolutepath           $app_pki_dir             = '/etc/pki/simp_apps/postfix/pki',
+  Stdlib::Absolutepath           $app_pki_key             = "${app_pki_dir}/private/${facts['fqdn']}.pem",
+  Stdlib::Absolutepath           $app_pki_cert            = "${app_pki_dir}/public/${facts['fqdn']}.pub",
+  Stdlib::Absolutepath           $app_pki_ca_dir          = "${app_pki_dir}/cacerts"
 ) {
   validate_net_list($trusted_nets)
 
@@ -111,20 +133,11 @@ class postfix::server (
       }
 
       if $pki {
-        pki::copy { $app_pki_dir:
+        pki::copy { 'postfix':
           pki    => $pki,
           source => $app_pki_external_source,
           group  => 'postfix',
           notify => Service['postfix']
-        }
-      }
-      else {
-        file { "${app_pki_dir}/pki":
-          ensure => 'directory',
-          owner  => 'root',
-          group  => 'root',
-          mode   => '0640',
-          source => $app_pki_external_source
         }
       }
     }
