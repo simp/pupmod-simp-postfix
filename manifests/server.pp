@@ -36,9 +36,9 @@
 #
 # @param pki
 #   * If 'simp', include SIMP's pki module and use pki::copy to manage
-#     application certs in /etc/pki/simp_apps/postfix/pki
+#     application certs in /etc/pki/simp_apps/postfix/x509
 #   * If true, do *not* include SIMP's pki module, but still use pki::copy
-#     to manage certs in /etc/pki/simp_apps/postfix/pki
+#     to manage certs in /etc/pki/simp_apps/postfix/x509
 #   * If false, do not include SIMP's pki module and do not use pki::copy
 #     to manage certs.  You will need to appropriately assign a subset of:
 #     * app_pki_dir
@@ -49,7 +49,7 @@
 #
 # @param app_pki_external_source
 #   * If pki = 'simp' or true, this is the directory from which certs will be
-#     copied, via pki::copy.  Defaults to /etc/pki/simp.
+#     copied, via pki::copy.  Defaults to /etc/pki/simp/x509.
 #
 #   * If pki = false, this variable has no effect.
 #
@@ -79,8 +79,8 @@ class postfix::server (
   Postfix::ManCiphers            $mandatory_ciphers       = 'high',
   Boolean                        $haveged                 = simplib::lookup('simp_options::haveged', { 'default_value'      => false }),
   Variant[Enum['simp'],Boolean]  $pki                     = simplib::lookup('simp_options::pki', { 'default_value'          => false }),
-  Stdlib::Absolutepath           $app_pki_external_source = simplib::lookup('simp_options::pki::source', { 'default_value'  => '/etc/pki/simp' }),
-  Stdlib::Absolutepath           $app_pki_dir             = '/etc/pki/simp_apps/postfix/pki',
+  Stdlib::Absolutepath           $app_pki_external_source = simplib::lookup('simp_options::pki::source', { 'default_value'  => '/etc/pki/simp/x509' }),
+  Stdlib::Absolutepath           $app_pki_dir             = '/etc/pki/simp_apps/postfix/x509',
   Stdlib::Absolutepath           $app_pki_key             = "${app_pki_dir}/private/${facts['fqdn']}.pem",
   Stdlib::Absolutepath           $app_pki_cert            = "${app_pki_dir}/public/${facts['fqdn']}.pub",
   Stdlib::Absolutepath           $app_pki_ca_dir          = "${app_pki_dir}/cacerts"
