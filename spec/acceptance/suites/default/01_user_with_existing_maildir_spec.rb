@@ -13,7 +13,7 @@ describe 'postfix' do
         EOS
       }
       let(:hieradata) {{
-        'postfix::server::app_pki_external_source' => '/etc/pki/simp-testing/pki/'
+        'simp_options::pki::source' => '/etc/pki/simp-testing/pki/'
       }}
 
       let(:test_user) { 'test_user' }

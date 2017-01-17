@@ -15,12 +15,11 @@ describe 'postfix::server' do
         it { is_expected.to create_postfix_main_cf('smtp_use_tls') }
         it { is_expected.to create_postfix_main_cf('smtp_enforce_tls') }
         it { is_expected.to create_postfix_main_cf('smtp_tls_mandatory_ciphers').with({ 'value' => 'high' }) }
-        it { is_expected.to create_postfix_main_cf('smtp_tls_cert_file').with(:value => "/etc/postfix/pki/public/#{facts[:fqdn]}.pub")}
-        it { is_expected.to create_postfix_main_cf('smtp_tls_CApath').with(:value => "/etc/postfix/pki/cacerts")}
-        it { is_expected.to create_postfix_main_cf('smtp_tls_key_file').with(:value => "/etc/postfix/pki/private/#{facts[:fqdn]}.pem")}
+        it { is_expected.to create_postfix_main_cf('smtp_tls_cert_file').with(:value => "/etc/pki/simp_apps/postfix/x509/public/#{facts[:fqdn]}.pub")}
+        it { is_expected.to create_postfix_main_cf('smtp_tls_CApath').with(:value => "/etc/pki/simp_apps/postfix/x509/cacerts")}
+        it { is_expected.to create_postfix_main_cf('smtp_tls_key_file').with(:value => "/etc/pki/simp_apps/postfix/x509/private/#{facts[:fqdn]}.pem")}
         it { is_expected.to_not contain_class('pki')}
-        it { is_expected.to_not contain_pki__copy('/etc/postfix').that_notifies('Service[postfix]') }
-        it { is_expected.to create_file('/etc/postfix/pki')}
+        it { is_expected.to_not contain_pki__copy('postfix').that_notifies('Service[postfix]') }
         it { is_expected.not_to contain_class('haveged') }
       end
 
@@ -34,7 +33,7 @@ describe 'postfix::server' do
         it { is_expected.not_to create_postfix_main_cf('smtp_enforce_tls') }
         it { is_expected.not_to create_postfix_main_cf('smtp_tls_mandatory_ciphers').with({ 'value' => 'high' }) }
         it { is_expected.not_to create_class('pki') }
-        it { is_expected.not_to contain_pki__copy('/etc/postfix').that_notifies('Service[postfix]') }
+        it { is_expected.not_to contain_pki__copy('postfix').that_notifies('Service[postfix]') }
         it { is_expected.to_not contain_class('haveged') }
       end
 
@@ -52,7 +51,7 @@ describe 'postfix::server' do
         it { is_expected.to create_postfix_main_cf('smtp_enforce_tls') }
         it { is_expected.to create_postfix_main_cf('smtp_tls_mandatory_ciphers').with({ 'value' => 'high' }) }
         it { is_expected.to_not create_class('pki') }
-        it { is_expected.to_not contain_pki__copy('/etc/postfix').that_notifies('Service[postfix]') }
+        it { is_expected.to_not contain_pki__copy('postfix').that_notifies('Service[postfix]') }
       end
 
       context 'no_enable_user_connect' do
@@ -80,7 +79,7 @@ describe 'postfix::server' do
         it { is_expected.to_not create_postfix_main_cf('smtp_tls__CApath')}
         it { is_expected.to_not create_postfix_main_cf('smtp_tls_key_file')}
         it { is_expected.not_to create_class('pki') }
-        it { is_expected.not_to contain_pki__copy('/etc/postfix').that_notifies('Service[postfix]') }
+        it { is_expected.not_to contain_pki__copy('postfix').that_notifies('Service[postfix]') }
         it { is_expected.to_not contain_class('haveged') }
       end
 
@@ -97,7 +96,7 @@ describe 'postfix::server' do
         it { is_expected.not_to create_postfix_main_cf('smtp_enforce_tls') }
         it { is_expected.to create_postfix_main_cf('smtp_tls_mandatory_ciphers').with({ 'value' => 'high' }) }
         it { is_expected.to_not create_class('pki') }
-        it { is_expected.to_not contain_pki__copy('/etc/postfix').that_notifies('Service[postfix]') }
+        it { is_expected.to_not contain_pki__copy('postfix').that_notifies('Service[postfix]') }
         it { is_expected.not_to contain_class('haveged') }
       end
 
@@ -111,7 +110,8 @@ describe 'postfix::server' do
         it { is_expected.to create_postfix_main_cf('smtp_enforce_tls') }
         it { is_expected.to create_postfix_main_cf('smtp_tls_mandatory_ciphers').with({ 'value' => 'high' }) }
         it { is_expected.to create_class('pki') }
-        it { is_expected.to contain_pki__copy('/etc/postfix').that_notifies('Service[postfix]') }
+        it { is_expected.to contain_pki__copy('postfix').that_notifies('Service[postfix]') }
+        it { is_expected.to create_file('/etc/pki/simp_apps/postfix/x509')}
         it { is_expected.not_to contain_class('haveged') }
       end
 
