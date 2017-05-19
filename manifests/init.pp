@@ -4,10 +4,16 @@
 # @param enable_server
 #   Whether or not to enable the *externally facing* server.
 #
+# @param postfix_ensure String to pass to the `postfix` package ensure attribute
+#
+# @param mutt_ensure String to pass to the `mutt` package ensure attribute
+#
 # @author Trevor Vaughan <tvaughan@onyxpoint.com>
 #
 class postfix (
-  Boolean $enable_server = false
+  Boolean $enable_server = false,
+  String $postfix_ensure = simplib::lookup('simp_options::package_ensure', { 'default_value' => 'installed' }),
+  String $mutt_ensure = simplib::lookup('simp_options::package_ensure', { 'default_value' => 'installed' }),
 ) {
 
   if $enable_server { include 'postfix::server' }
@@ -42,14 +48,15 @@ class postfix (
     require => Package['postfix']
   }
 
-  file { [
-    '/etc/postfix/postfix-script',
-    '/etc/postfix/post-install'
-  ]:
-    owner   => 'root',
-    group   => 'postfix',
-    mode    => '0750',
-    require => Package['postfix']
+  file {
+    default:
+      owner   => 'root',
+      group   => 'postfix',
+      mode    => '0750',
+      require => Package['postfix'];
+
+    '/etc/postfix/postfix-script':;
+    '/etc/postfix/post-install':;
   }
 
   #---
@@ -69,8 +76,7 @@ class postfix (
     group     => 'root',
     mode      => '0644',
     require   => Package['postfix'],
-    subscribe => Simpcat_build['postfix'],
-    audit     => content
+    subscribe => Simpcat_build['postfix']
   }
 
   # Main configuration file
@@ -79,7 +85,6 @@ class postfix (
     owner   => 'root',
     group   => 'root',
     mode    => '0644',
-    audit   => 'content',
     notify  => Service['postfix'],
     require => Package['postfix']
   }
@@ -90,46 +95,45 @@ class postfix (
     group   => 'root',
     mode    => '0640',
     #content => template('postfix/master.cf.erb'),
-    audit   => 'content',
     notify  => Service['postfix'],
     require => Package['postfix']
   }
 
   # postmap files.
-  file { [
-          '/etc/postfix/access',
-          '/etc/postfix/canonical',
-          '/etc/postfix/generic',
-          '/etc/postfix/relocated',
-          '/etc/postfix/transport',
-          '/etc/postfix/virtual'
-  ]:
-    ensure  => 'file',
-    owner   => 'root',
-    group   => 'root',
-    mode    => '0640',
-    #content => template('postfix/postmap.erb'),
-    audit   => 'content',
-    require => Package['postfix'],
-    #notify => Exec['postmap']
+  file {
+    default:
+      ensure  => 'file',
+      owner   => 'root',
+      group   => 'root',
+      mode    => '0640',
+      #content => template('postfix/postmap.erb'),
+      require => Package['postfix'];
+      #notify => Exec['postmap']
+
+    '/etc/postfix/access':;
+    '/etc/postfix/canonical':;
+    '/etc/postfix/generic':;
+    '/etc/postfix/relocated':;
+    '/etc/postfix/transport':;
+    '/etc/postfix/virtual':;
   }
 
   # Content checks
   # These need defines to add stuff to them.
-  file { [
-          '/etc/postfix/header_checks',
-          '/etc/postfix/mime_header_checks',
-          '/etc/postfix/nested_header_checks',
-          '/etc/postfix/body_checks'
-  ]:
-    ensure  => 'file',
-    owner   => 'root',
-    group   => 'root',
-    mode    => '0640',
-    #content => template('postfix/checks.erb'),
-    audit   => 'content',
-    notify  => Service['postfix'],
-    require => Package['postfix']
+  file {
+    default:
+      ensure  => 'file',
+      owner   => 'root',
+      group   => 'root',
+      mode    => '0640',
+      #content => template('postfix/checks.erb'),
+      notify  => Service['postfix'],
+      require => Package['postfix'];
+
+    '/etc/postfix/header_checks':;
+    '/etc/postfix/mime_header_checks':;
+    '/etc/postfix/nested_header_checks':;
+    '/etc/postfix/body_checks':;
   }
 
   file { '/usr/libexec/postfix':
@@ -198,9 +202,8 @@ mailboxes `echo -n "+ "; find ~/Maildir -type d -name ".*" -printf "+\'%f\' "`
     require   => Package['postfix']
   }
 
-  package { 'postfix': ensure => 'latest' }
-
-  package { 'mutt': ensure => 'latest' }
+  package { 'postfix': ensure => $postfix_ensure }
+  package { 'mutt': ensure => $mutt_ensure }
 
   service { 'postfix':
     ensure     => 'running',

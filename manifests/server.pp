@@ -70,20 +70,20 @@
 # @author Trevor Vaughan <tvaughan@onyxpoint.com>
 #
 class postfix::server (
-  Array[String]                  $inet_interfaces         = ['all'],
-  Boolean                        $firewall                = simplib::lookup('simp_options::firewall', { 'default_value'     => false }),
-  Simplib::Netlist               $trusted_nets            = simplib::lookup('simp_options::trusted_nets', { 'default_value' => ['127.0.0.1'] }),
-  Boolean                        $enable_user_connect     = true,
-  Boolean                        $enable_tls              = true,
-  Boolean                        $enforce_tls             = true,
-  Postfix::ManCiphers            $mandatory_ciphers       = 'high',
-  Boolean                        $haveged                 = simplib::lookup('simp_options::haveged', { 'default_value'      => false }),
-  Variant[Enum['simp'],Boolean]  $pki                     = simplib::lookup('simp_options::pki', { 'default_value'          => false }),
-  Stdlib::Absolutepath           $app_pki_external_source = simplib::lookup('simp_options::pki::source', { 'default_value'  => '/etc/pki/simp/x509' }),
-  Stdlib::Absolutepath           $app_pki_dir             = '/etc/pki/simp_apps/postfix/x509',
-  Stdlib::Absolutepath           $app_pki_key             = "${app_pki_dir}/private/${facts['fqdn']}.pem",
-  Stdlib::Absolutepath           $app_pki_cert            = "${app_pki_dir}/public/${facts['fqdn']}.pub",
-  Stdlib::Absolutepath           $app_pki_ca_dir          = "${app_pki_dir}/cacerts"
+  Array[String]                 $inet_interfaces         = ['all'],
+  Boolean                       $firewall                = simplib::lookup('simp_options::firewall', { 'default_value'     => false }),
+  Simplib::Netlist              $trusted_nets            = simplib::lookup('simp_options::trusted_nets', { 'default_value' => ['127.0.0.1'] }),
+  Boolean                       $enable_user_connect     = true,
+  Boolean                       $enable_tls              = true,
+  Boolean                       $enforce_tls             = true,
+  Postfix::ManCiphers           $mandatory_ciphers       = 'high',
+  Boolean                       $haveged                 = simplib::lookup('simp_options::haveged', { 'default_value'      => false }),
+  Variant[Enum['simp'],Boolean] $pki                     = simplib::lookup('simp_options::pki', { 'default_value'          => false }),
+  Stdlib::Absolutepath          $app_pki_external_source = simplib::lookup('simp_options::pki::source', { 'default_value'  => '/etc/pki/simp/x509' }),
+  Stdlib::Absolutepath          $app_pki_dir             = '/etc/pki/simp_apps/postfix/x509',
+  Stdlib::Absolutepath          $app_pki_key             = "${app_pki_dir}/private/${facts['fqdn']}.pem",
+  Stdlib::Absolutepath          $app_pki_cert            = "${app_pki_dir}/public/${facts['fqdn']}.pub",
+  Stdlib::Absolutepath          $app_pki_ca_dir          = "${app_pki_dir}/cacerts"
 ) {
   validate_net_list($trusted_nets)
 
@@ -112,24 +112,16 @@ class postfix::server (
     if $enable_tls {
       if $haveged { include '::haveged' }
 
-      postfix_main_cf { 'smtp_use_tls': value => 'yes' }
-
       if $enforce_tls {
         postfix_main_cf { 'smtp_enforce_tls': value => 'yes' }
       }
 
-      postfix_main_cf { 'smtp_tls_mandatory_ciphers': value => $mandatory_ciphers }
-
-      postfix_main_cf { 'smtp_tls_CApath':
-        value   => $app_pki_ca_dir,
-      }
-
-      postfix_main_cf { 'smtp_tls_cert_file':
-        value   => $app_pki_cert,
-      }
-
-      postfix_main_cf { 'smtp_tls_key_file':
-        value   => $app_pki_key,
+      postfix_main_cf {
+        'smtp_use_tls'               : value => 'yes';
+        'smtp_tls_mandatory_ciphers' : value => $mandatory_ciphers;
+        'smtp_tls_CApath'            : value => $app_pki_ca_dir;
+        'smtp_tls_cert_file'         : value => $app_pki_cert;
+        'smtp_tls_key_file'          : value => $app_pki_key;
       }
 
       if $pki {
