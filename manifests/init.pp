@@ -4,11 +4,16 @@
 # @param enable_server
 #   Whether or not to enable the *externally facing* server.
 #
+# @param postfix_ensure String to pass to the `postfix` package ensure attribute
+#
+# @param mutt_ensure String to pass to the `mutt` package ensure attribute
+#
 # @author Trevor Vaughan <tvaughan@onyxpoint.com>
 #
 class postfix (
   Boolean $enable_server = false,
-  Simplib::PackageEnsure $ensure = simplib::lookup('simp_options::package_ensure', { 'default_value' => 'installed' }),
+  String $postfix_ensure = simplib::lookup('simp_options::package_ensure', { 'default_value' => 'installed' }),
+  String $mutt_ensure = simplib::lookup('simp_options::package_ensure', { 'default_value' => 'installed' }),
 ) {
 
   if $enable_server { include 'postfix::server' }
@@ -197,8 +202,8 @@ mailboxes `echo -n "+ "; find ~/Maildir -type d -name ".*" -printf "+\'%f\' "`
     require   => Package['postfix']
   }
 
-  package { 'postfix': ensure => $ensure }
-  package { 'mutt': ensure => $ensure }
+  package { 'postfix': ensure => $postfix_ensure }
+  package { 'mutt': ensure => $mutt_ensure }
 
   service { 'postfix':
     ensure     => 'running',
