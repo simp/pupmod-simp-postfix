@@ -8,12 +8,16 @@
 #
 # @param mutt_ensure String to pass to the `mutt` package ensure attribute
 #
+# @param inet_protocols
+#   The protocols to use when enabling the service
+#
 # @author Trevor Vaughan <tvaughan@onyxpoint.com>
 #
 class postfix (
-  Boolean $enable_server = false,
-  String $postfix_ensure = simplib::lookup('simp_options::package_ensure', { 'default_value' => 'installed' }),
-  String $mutt_ensure = simplib::lookup('simp_options::package_ensure', { 'default_value' => 'installed' }),
+  Boolean                $enable_server  = false,
+  Simplib::PackageEnsure $postfix_ensure = simplib::lookup('simp_options::package_ensure', { 'default_value' => 'installed' }),
+  Simplib::PackageEnsure $mutt_ensure    = simplib::lookup('simp_options::package_ensure', { 'default_value' => 'installed' }),
+  Postfix::InetProtocols $inet_protocols = fact('ipv6_enabled') ? { true => ['all'], default => ['ipv4'] }
 ) {
 
   if $enable_server { include 'postfix::server' }
@@ -205,13 +209,6 @@ mailboxes `echo -n "+ "; find ~/Maildir -type d -name ".*" -printf "+\'%f\' "`
   package { 'postfix': ensure => $postfix_ensure }
   package { 'mutt': ensure => $mutt_ensure }
 
-  service { 'postfix':
-    ensure     => 'running',
-    enable     => true,
-    hasrestart => true,
-    hasstatus  => true
-  }
-
   user { 'postfix':
     ensure     => 'present',
     allowdupe  => false,
@@ -221,5 +218,16 @@ mailboxes `echo -n "+ "; find ~/Maildir -type d -name ".*" -printf "+\'%f\' "`
     membership => 'inclusive',
     shell      => '/sbin/nologin',
     require    => Package['postfix']
+  }
+
+  postfix_main_cf { 'inet_protocols':
+    value => join($inet_protocols, ",")
+  }
+
+  service { 'postfix':
+    ensure     => 'running',
+    enable     => true,
+    hasrestart => true,
+    hasstatus  => true
   }
 }

@@ -6,9 +6,9 @@
 # @param inet_interfaces
 #   The interfaces upon which to listen per the inet_interfaces option
 #   in main.cf.
-#   This defaults to 'all' since it is assumed that you would not be
-#   using this class if you didn't want an externally listening
-#   server.
+#
+#   * This defaults to `all` since it is assumed that you would not be using
+#     this class if you didn't want an externally listening server.
 #
 # @param firewall
 #   If the externally facing server is enabled, whether or not to use
@@ -70,8 +70,8 @@
 # @author Trevor Vaughan <tvaughan@onyxpoint.com>
 #
 class postfix::server (
-  Array[String]                 $inet_interfaces         = ['all'],
-  Boolean                       $firewall                = simplib::lookup('simp_options::firewall', { 'default_value'     => false }),
+  Array[String[1]]              $inet_interfaces         = ['all'],
+  Boolean                       $firewall                = simplib::lookup('simp_options::firewall', { 'default_value' => false }),
   Simplib::Netlist              $trusted_nets            = simplib::lookup('simp_options::trusted_nets', { 'default_value' => ['127.0.0.1'] }),
   Boolean                       $enable_user_connect     = true,
   Boolean                       $enable_tls              = true,
@@ -85,14 +85,12 @@ class postfix::server (
   Stdlib::Absolutepath          $app_pki_cert            = "${app_pki_dir}/public/${facts['fqdn']}.pub",
   Stdlib::Absolutepath          $app_pki_ca_dir          = "${app_pki_dir}/cacerts"
 ) {
-  validate_net_list($trusted_nets)
-
   include '::postfix'
 
   # Don't do any of this if we're just listening on localhost.
   if $inet_interfaces != ['localhost'] {
     postfix_main_cf { 'inet_interfaces':
-      value => inline_template('<%= Array(@inet_interfaces).join(",") -%>')
+      value => join($inet_interfaces, ",")
     }
 
     if $firewall {

@@ -1,3 +1,6 @@
+* Tue Mar 13 2018 Trevor Vaughan <tvaughan@onyxpoint.com> - 5.0.3-0
+- Ensure that only IPv4 is used if IPv6 is disabled on the system
+
 * Fri May 19 2017 Nick Miller <nick.miller@onyxpoint.com> - 5.0.2-0
 - Removed `audit` metaparameter
 - Implemented `package_ensure` catalyst

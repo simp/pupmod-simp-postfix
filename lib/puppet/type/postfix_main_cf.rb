@@ -4,15 +4,6 @@ Puppet::Type.newtype(:postfix_main_cf) do
 
   @doc = "Modifies settings in the postfix main.cf configuration file."
 
-  def initialize(args)
-    super(args)
-
-    if self[:notify] then
-      self[:notify] += ['Service[postfix]']
-    else
-      self[:notify] = ['Service[postfix]']
-    end
-  end
   newparam(:name) do
     isnamevar
     desc "The parameter to modify."
@@ -31,5 +22,9 @@ Puppet::Type.newtype(:postfix_main_cf) do
     end
 
     raise(ArgumentError,"You must supply all of '#{must_supply.join(', ')}'") if not found
+  end
+
+  autonotify(:service) do
+    'postfix'
   end
 end
