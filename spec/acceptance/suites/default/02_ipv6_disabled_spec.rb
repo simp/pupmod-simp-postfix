@@ -16,13 +16,12 @@ describe 'postfix' do
       }}
 
       # SIMP-4418
-      it 'should disable ipv6' do
+      it 'should disable ipv6 on the system, but not in the kernel' do
         on(host, 'sysctl -w net.ipv6.conf.all.disable_ipv6=1')
         on(host, 'sysctl -w net.ipv6.conf.default.disable_ipv6=1')
         on(host, 'sysctl -p')
-        on(host, 'puppet resource kernel_parameter ipv6.disable ensure=present value=1')
-        host.reboot
       end
+
       it 'should stop and disable postfix' do
         case host[:platform]
         when /el-6-x86_64/
