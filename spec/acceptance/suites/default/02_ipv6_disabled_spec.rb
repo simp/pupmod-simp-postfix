@@ -23,13 +23,7 @@ describe 'postfix' do
       end
 
       it 'should stop and disable postfix' do
-        case host[:platform]
-        when /el-6-x86_64/
-          on(host, 'service postfix stop')
-          on(host, 'chkconfig postfix off')
-        when /el-7-x86_64/
-          on(host, 'systemctl disable postfix --now')
-        end
+        on(host, 'puppet resource service postfix ensure=stopped enable=false')
       end
 
       it 'should work with no errors' do
