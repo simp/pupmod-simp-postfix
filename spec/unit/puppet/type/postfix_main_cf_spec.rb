@@ -17,18 +17,4 @@ describe Puppet::Type.type(:postfix_main_cf) do
       )
     }.to raise_error(Puppet::ResourceError,/You must supply.*value/)
   end
-
-  it 'should notify Service[postfix]' do
-    expect(postfix_main_cf[:notify].map{|x| x = x.to_s}).to include('Service[postfix]')
-  end
-
-  it 'should notify Service[postfix] if passed another notify parameter' do
-    postfix_main_cf = Puppet::Type.type(:postfix_main_cf).new(
-      :name   => 'mail_owner',
-      :value  => 'postfix',
-      :notify => 'Service[test]'
-    )
-
-    expect(postfix_main_cf[:notify].map{|x| x = x.to_s}).to include('Service[postfix]')
-  end
 end

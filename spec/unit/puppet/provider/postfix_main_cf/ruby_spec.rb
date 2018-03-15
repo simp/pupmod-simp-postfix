@@ -6,6 +6,7 @@ describe provider_class do
   before :each do
     @resource = Puppet::Type::Postfix_main_cf.new(:name  => 'mail_owner', :value => 'postfix')
     @provider = provider_class.new(@resource)
+    @provider.stubs(:postconf).with('inet_interfaces').returns "inet_interfaces = all\n"
   end
 
   context "when matching" do

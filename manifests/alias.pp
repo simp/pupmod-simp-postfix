@@ -11,7 +11,7 @@
 # @author Trevor Vaughan <tvaughan@onyxpoint.com>
 #
 define postfix::alias (
-  String $values
+  String[1] $values
 ){
   simpcat_fragment { "postfix+${name}.alias":
     content => "${name}: ${values}\n"
