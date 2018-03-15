@@ -15,8 +15,8 @@
 #
 class postfix (
   Boolean                $enable_server  = false,
-  Simplib::PackageEnsure $postfix_ensure = simplib::lookup('simp_options::package_ensure', { 'default_value' => 'installed' }),
-  Simplib::PackageEnsure $mutt_ensure    = simplib::lookup('simp_options::package_ensure', { 'default_value' => 'installed' }),
+  String                 $postfix_ensure = simplib::lookup('simp_options::package_ensure', { 'default_value' => 'installed' }),
+  String                 $mutt_ensure    = simplib::lookup('simp_options::package_ensure', { 'default_value' => 'installed' }),
   Postfix::InetProtocols $inet_protocols = fact('ipv6_enabled') ? { true => ['all'], default => ['ipv4'] }
 ) {
 
