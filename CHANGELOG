@@ -1,3 +1,10 @@
+* Thu May 17 2018 Jeanne Greulich <jeanne.greulich@onyxpoint.com> - 5.1.0-0
+- Added main_cf_hash parameter so a list of settings for main.cf
+  file can be added with out the need for entering a resource for each one.
+- Added the smtpd_client_restrict entry to main.cf per the STIG.
+- Updated simpcat to concat.
+- Rearranged code into sub-classes to make it easier to follow.
+
 * Tue Mar 13 2018 Trevor Vaughan <tvaughan@onyxpoint.com> - 5.0.3-0
 - Ensure that only IPv4 is used if IPv6 is disabled on the system
 

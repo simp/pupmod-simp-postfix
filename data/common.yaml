@@ -1,0 +1,13 @@
+---
+lookup_options:
+  'postfix::main_cf_hash':
+    merge:
+      strategy: deep
+      knockout_prefix: --
+
+postfix::main_cf_hash:
+  smtpd_client_restrictions:
+    value: 
+      - 'permit_mynetworks'
+      - 'reject'
+
