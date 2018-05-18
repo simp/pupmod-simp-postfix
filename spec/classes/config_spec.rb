@@ -6,7 +6,7 @@ describe 'postfix::config' do
       let(:facts) { facts }
 
       context 'postfix config with default params' do
-        let(:pre_condition) {'include postfix'}
+        let(:pre_condition) {'class { "postfix": main_cf_hash => { } }'}
         it { is_expected.to compile.with_all_deps }
         it { is_expected.to contain_simp_file_line('/root/.bashrc') }
         it { is_expected.to contain_exec('postalias').that_subscribes_to('Concat[/etc/aliases]') }
