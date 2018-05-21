@@ -11,7 +11,7 @@
 # @param inet_protocols
 #   The protocols to use when enabling the service
 #
- #@author https://github.com/simp/pupmod-simp-postfix/graphs/contributors
+# @author https://github.com/simp/pupmod-simp-postfix/graphs/contributors
 #
 class postfix (
   Hash                    $main_cf_hash,    # Set in module data
