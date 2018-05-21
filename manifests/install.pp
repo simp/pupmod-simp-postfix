@@ -1,7 +1,7 @@
 # Install the packages, users and groups
 # needed for the postfix server.
 #
-# @author Trevor Vaughan <tvaughan@onyxpoint.com>
+# @author https://github.com/simp/pupmod-simp-postfix/graphs/contributors
 #
 class postfix::install (
 ){
