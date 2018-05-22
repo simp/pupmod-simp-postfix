@@ -2,8 +2,8 @@ require 'spec_helper'
 
 describe 'postfix::server' do
   context 'supported operating systems' do
-    on_supported_os.each do |os, facts|
-      let(:facts) { facts }
+    on_supported_os.each do |os, os_facts|
+      let(:facts) { os_facts }
 
       it { is_expected.to create_class('postfix::server') }
 

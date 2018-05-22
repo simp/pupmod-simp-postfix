@@ -1,15 +1,28 @@
+# main.cf configuration class called from postfix::config.
 #
-# Read the settings from main_cf_hash in the data file and
-# create entries for them in the /etc/postfix/main.cf
-# file.
+# Set settings in /etc/postfix/main.cf based on
+# postfix:: main_cf_hash and postfix::inet_protocols.
 #
-# The settings not in the hash that are set here
-# are left outside the hash so the interface
-# for the postfix module remains the same.  They will be
-# moved in future releases if possible.
+# IMPORTANT:
+# * postfix::main_cf_hash value is a deep merge of hieradata
+#   and data-in-module settings.
+# * For backward compatibility, all main.cf settings already set
+#   from other sources in this module (postfix::inet_procotols
+#   and numerous postfix::server parameters) **CANNOT** be
+#   also set in postfix::main_cf_hash. Otherwise, the catalog
+#   will fail to compile because of  duplicate `postfix_main_cf`
+#   resource declarations.
 #
 class postfix::config::main_cf(
 ){
+  assert_private()
+
+  file { '/etc/postfix/main.cf':
+    ensure => 'file',
+    owner  => 'root',
+    group  => 'root',
+    mode   => '0644',
+  }
 
   postfix_main_cf { 'inet_protocols':
     value => join($::postfix::inet_protocols, ',')

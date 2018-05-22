@@ -1,8 +1,10 @@
 #
-#  Start the postfix service
+#  Service class called from postfix 
 #
 class postfix::service (
 ) {
+
+  assert_private()
 
   service { 'postfix':
     ensure     => 'running',
