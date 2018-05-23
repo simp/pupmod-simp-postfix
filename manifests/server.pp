@@ -67,7 +67,7 @@
 # @param app_pki_ca_dir
 #   Path to the CA.
 #
-# @author Trevor Vaughan <tvaughan@onyxpoint.com>
+# @author https://github.com/simp/pupmod-simp-postfix/graphs/contributors
 #
 class postfix::server (
   Array[String[1]]              $inet_interfaces         = ['all'],

@@ -8,9 +8,7 @@
 # * Sets permissions on other postfix configuration files.
 # * Creates postfix processing directories.
 #
-class postfix::config (
-) {
-
+class postfix::config {
   assert_private()
 
   include 'postfix::config::main_cf'

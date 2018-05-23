@@ -49,24 +49,49 @@ describe 'postfix::config' do
       end
 
       context 'postfix class with main_cf_hash set' do
-        let(:pre_condition) {<<EOM
-class { 'postfix':
-  main_cf_hash => {
-    'address_verify_cache_cleanup_interval' => {
-      'value' => '5h'
-    },
-    'allow_mail_to_commands' => {
-      'value' => [ 'alias', 'forward', 'include' ]
-    }
-  }
-}
-EOM
+        let(:pre_condition) {<<-EOM.gsub(/^\s+/,'')
+          class { 'postfix':
+            main_cf_hash => {
+              'address_verify_cache_cleanup_interval' => {
+                'value' => '5h'
+              },
+              'allow_mail_to_commands' => {
+                'value' => [ 'alias', 'forward', 'include' ]
+              }
+            }
+          }
+          EOM
         }
 
         it { is_expected.to compile.with_all_deps }
         it { is_expected.to contain_postfix_main_cf('inet_protocols') }
         it { is_expected.to contain_postfix_main_cf('address_verify_cache_cleanup_interval').with_value('5h') }
         it { is_expected.to contain_postfix_main_cf('allow_mail_to_commands').with_value('alias,forward,include') }
+      end
+
+      context 'postfix class with main_cf_hash set with dupes' do
+        let(:pre_condition) {<<-EOM.gsub(/^\s+/,'')
+          class { 'postfix':
+            main_cf_hash => {
+              'address_verify_cache_cleanup_interval' => {
+                'value' => '5h'
+              },
+              'allow_mail_to_commands' => {
+                'value' => [ 'alias', 'forward', 'include' ]
+              },
+              'inet_protocols' => {
+                'value' => ['hello']
+              }
+            }
+          }
+          EOM
+        }
+
+        it { is_expected.to compile.with_all_deps }
+        it { is_expected.to contain_postfix_main_cf('inet_protocols') }
+        it { is_expected.to contain_postfix_main_cf('address_verify_cache_cleanup_interval').with_value('5h') }
+        it { is_expected.to contain_postfix_main_cf('allow_mail_to_commands').with_value('alias,forward,include') }
+        it { is_expected.to contain_notify('postfix::main_cf_hash: inet_protocols is already managed by this module, skipping.') }
       end
 
       context 'postfix class when ipv6_enabled fact false ' do

@@ -1,8 +1,6 @@
 # aliases configuration class called from postfix::config.
 #
-class postfix::config::aliases (
-) {
-
+class postfix::config::aliases {
   assert_private()
 
   exec { 'postalias':

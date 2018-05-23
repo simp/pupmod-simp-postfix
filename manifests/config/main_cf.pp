@@ -13,8 +13,7 @@
 #   will fail to compile because of  duplicate `postfix_main_cf`
 #   resource declarations.
 #
-class postfix::config::main_cf(
-){
+class postfix::config::main_cf {
   assert_private()
 
   file { '/etc/postfix/main.cf':
@@ -28,8 +27,24 @@ class postfix::config::main_cf(
     value => join($::postfix::inet_protocols, ',')
   }
 
+  # this is an array of postfix_main_cf resource that are managed elsewhere
+  # in this module, and should not be managed with this hash
+  $_main_cf_blacklist = [
+    'inet_protocols',
+    'smtp_enforce_tls',
+    'smtp_use_tls',
+    'smtp_tls_mandatory_ciphers',
+    'smtp_tls_CApath',
+    'smtp_tls_cert_file',
+    'smtp_tls_key_file',
+  ]
+
   # Add values to the postfix/main.cf file.
-  $::postfix::main_cf_hash.each |String $setting, $data|{
+  $::postfix::main_cf_hash.each |String $setting, $data| {
+    if ($setting in $_main_cf_blacklist) {
+      notify { "postfix::main_cf_hash: ${setting} is already managed by this module, skipping.": }
+      next()
+    }
     if $data['value'] =~ Array {
       $_value = join($data['value'], ',')
     }

@@ -24,11 +24,11 @@
 # @author https://github.com/simp/pupmod-simp-postfix/graphs/contributors
 #
 class postfix (
-  Hash                    $main_cf_hash,    # Set in module data
-  Boolean                 $enable_server  = false,
-  String                  $postfix_ensure = simplib::lookup('simp_options::package_ensure', { 'default_value' => 'installed' }),
-  String                  $mutt_ensure    = simplib::lookup('simp_options::package_ensure', { 'default_value' => 'installed' }),
-  Postfix::InetProtocols  $inet_protocols = fact('ipv6_enabled') ? { true => ['all'], default => ['ipv4'] }
+  Hash                   $main_cf_hash,  # Set in module data
+  Boolean                $enable_server  = false,
+  String                 $postfix_ensure = simplib::lookup('simp_options::package_ensure', { 'default_value' => 'installed' }),
+  String                 $mutt_ensure    = simplib::lookup('simp_options::package_ensure', { 'default_value' => 'installed' }),
+  Postfix::InetProtocols $inet_protocols = fact('ipv6_enabled') ? { true => ['all'], default => ['ipv4'] }
 ) {
 
   include 'postfix::install'

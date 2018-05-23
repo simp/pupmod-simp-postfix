@@ -3,9 +3,7 @@
 #
 # @author https://github.com/simp/pupmod-simp-postfix/graphs/contributors
 #
-class postfix::install (
-){
-
+class postfix::install {
   assert_private()
 
   group { 'postfix':
@@ -23,7 +21,7 @@ class postfix::install (
   }
 
   package { 'postfix': ensure => $::postfix::postfix_ensure }
-  package { 'mutt': ensure => $::postfix::mutt_ensure }
+  package { 'mutt':    ensure => $::postfix::mutt_ensure }
 
   user { 'postfix':
     ensure     => 'present',
@@ -37,4 +35,3 @@ class postfix::install (
   }
 
 }
-

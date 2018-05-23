@@ -1,9 +1,6 @@
+# Service class called from postfix
 #
-#  Service class called from postfix 
-#
-class postfix::service (
-) {
-
+class postfix::service {
   assert_private()
 
   service { 'postfix':
