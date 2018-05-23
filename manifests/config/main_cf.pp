@@ -43,16 +43,17 @@ class postfix::config::main_cf {
   $::postfix::main_cf_hash.each |String $setting, $data| {
     if ($setting in $_main_cf_blacklist) {
       notify { "postfix::main_cf_hash: ${setting} is already managed by this module, skipping.": }
-      next()
-    }
-    if $data['value'] =~ Array {
-      $_value = join($data['value'], ',')
     }
     else {
-      $_value = $data['value']
-    }
-    postfix_main_cf { $setting:
-      value => $_value
+      if $data['value'] =~ Array {
+        $_value = join($data['value'], ',')
+      }
+      else {
+        $_value = $data['value']
+      }
+      postfix_main_cf { $setting:
+        value => $_value
+      }
     }
   }
 }
