@@ -36,6 +36,11 @@ describe 'postfix' do
           expect(stdout).to match(/enable => 'true'/)
         end
       end
+      it 'should add postfix::main_cf_hash options to file' do
+        result = shell('cat /etc/postfix/main.cf').stdout
+        expect(result).to include('smtpd_client_restrictions = permit_mynetworks,reject')
+      end
+
     end
   end
 end

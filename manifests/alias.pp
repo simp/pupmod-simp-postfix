@@ -8,12 +8,16 @@
 #   The RHS values of the postalias file in accordance with
 #   aliases(5).
 #
-# @author Trevor Vaughan <tvaughan@onyxpoint.com>
+# @author https://github.com/simp/pupmod-simp-postfix/graphs/contributors
 #
 define postfix::alias (
   String[1] $values
 ){
-  simpcat_fragment { "postfix+${name}.alias":
+
+  concat::fragment { "postfix+${name}.alias":
+    order   => 2,
+    target  => '/etc/aliases',
     content => "${name}: ${values}\n"
   }
+
 }

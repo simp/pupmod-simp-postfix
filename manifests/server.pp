@@ -67,7 +67,7 @@
 # @param app_pki_ca_dir
 #   Path to the CA.
 #
-# @author Trevor Vaughan <tvaughan@onyxpoint.com>
+# @author https://github.com/simp/pupmod-simp-postfix/graphs/contributors
 #
 class postfix::server (
   Array[String[1]]              $inet_interfaces         = ['all'],
@@ -85,7 +85,7 @@ class postfix::server (
   Stdlib::Absolutepath          $app_pki_cert            = "${app_pki_dir}/public/${facts['fqdn']}.pub",
   Stdlib::Absolutepath          $app_pki_ca_dir          = "${app_pki_dir}/cacerts"
 ) {
-  include '::postfix'
+  include 'postfix'
 
   # Don't do any of this if we're just listening on localhost.
   if $inet_interfaces != ['localhost'] {
@@ -94,7 +94,7 @@ class postfix::server (
     }
 
     if $firewall {
-      include '::iptables'
+      include 'iptables'
 
       $_dports = $enable_user_connect ? {
         true    => [ 25,587 ],
@@ -108,7 +108,7 @@ class postfix::server (
     }
 
     if $enable_tls {
-      if $haveged { include '::haveged' }
+      if $haveged { include 'haveged' }
 
       if $enforce_tls {
         postfix_main_cf { 'smtp_enforce_tls': value => 'yes' }
