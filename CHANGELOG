@@ -1,3 +1,6 @@
+* Fri Jun 15 2018 Nick Miller <nick.miller@onyxpoint.com> - 5.1.0-0
+- Cleanup unneeded fixtures and update CI assets
+
 * Thu May 17 2018 Jeanne Greulich <jeanne.greulich@onyxpoint.com> - 5.1.0-0
 - Added main_cf_hash parameter so a list of additional settings for main.cf
   file can be added without the need for entering a resource for each one.
