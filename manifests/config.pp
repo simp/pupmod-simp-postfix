@@ -31,17 +31,17 @@ class postfix::config {
     mode  => '0750';
   }
 
+
   #---
   # Files to be templated. Templates are commented.
   #+++
-
 
   # master daemon configuration file
   file { '/etc/postfix/master.cf':
     ensure => 'file',
     owner  => 'root',
     group  => 'root',
-    mode   => '0640',
+    mode   => '0644',
     #content => template('postfix/master.cf.erb'),
   }
 
@@ -57,7 +57,7 @@ class postfix::config {
     ensure => 'file',
     owner  => 'root',
     group  => 'root',
-    mode   => '0640';
+    mode   => '0644';
     #content => template('postfix/postmap.erb'),
     #notify => Exec['postmap']
   }
@@ -73,13 +73,12 @@ class postfix::config {
     ensure => 'file',
     owner  => 'root',
     group  => 'root',
-    mode   => '0640',
+    mode   => '0644',
     #content => template('postfix/checks.erb'),
   }
 
   file { '/usr/libexec/postfix':
-    ensure  => 'present',
-    recurse => true,
+    ensure  => 'directory',
     owner   => 'root',
     group   => 'root',
     mode    => '0755'
@@ -96,7 +95,7 @@ class postfix::config {
     ensure => 'directory',
     owner  => 'root',
     group  => 'mail',
-    mode   => '0755'
+    mode   => '0775'
   }
 
   file { '/var/mail':
