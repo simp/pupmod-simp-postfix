@@ -1,3 +1,9 @@
+* Tue Jun 19 2018 Nick Miller <nick.miller@onyxpoint.com> - 5.1.0-0
+- Avoid changing the permissions from the vendored RPM
+  - /etc/postfix/* perms from 0640 to 0644
+  - /usr/libexec/postfix management is no longer recursive
+  - /var/spool/mail perms from 0755 to 0775
+
 * Thu May 17 2018 Jeanne Greulich <jeanne.greulich@onyxpoint.com> - 5.1.0-0
 - Added main_cf_hash parameter so a list of additional settings for main.cf
   file can be added without the need for entering a resource for each one.
