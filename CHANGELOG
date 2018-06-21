@@ -1,4 +1,8 @@
-* Fri Jun 15 2018 Nick Miller <nick.miller@onyxpoint.com> - 5.1.0-0
+* Tue Jun 19 2018 Nick Miller <nick.miller@onyxpoint.com> - 5.1.0-0
+- Avoid changing the permissions from the vendored RPM
+  - /etc/postfix/* perms from 0640 to 0644
+  - /usr/libexec/postfix management is no longer recursive
+  - /var/spool/mail perms from 0755 to 0775
 - Cleanup unneeded fixtures and update CI assets
 
 * Thu May 17 2018 Jeanne Greulich <jeanne.greulich@onyxpoint.com> - 5.1.0-0
