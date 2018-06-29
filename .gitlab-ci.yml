@@ -194,6 +194,7 @@ default-acceptance:
   variables:
     PUPPET_VERSION: '4.10'
   script:
+    - bundle exec rake spec_clean
     - bundle exec rake beaker:suites[default]
 
 fips-acceptance:
@@ -206,6 +207,7 @@ fips-acceptance:
     PUPPET_VERSION: '4.10'
     BEAKER_fips: 'yes'
   script:
+    - bundle exec rake spec_clean
     - bundle exec rake beaker:suites[default]
 
 acceptance-puppet5-default:
