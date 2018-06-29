@@ -90,7 +90,7 @@ class postfix::server (
   # Don't do any of this if we're just listening on localhost.
   if $inet_interfaces != ['localhost'] {
     postfix_main_cf { 'inet_interfaces':
-      value => join($inet_interfaces, ",")
+      value => join($inet_interfaces, ',')
     }
 
     if $firewall {

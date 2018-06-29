@@ -78,10 +78,10 @@ class postfix::config {
   }
 
   file { '/usr/libexec/postfix':
-    ensure  => 'directory',
-    owner   => 'root',
-    group   => 'root',
-    mode    => '0755'
+    ensure => 'directory',
+    owner  => 'root',
+    group  => 'root',
+    mode   => '0755'
   }
 
   file { '/var/spool/postfix':
