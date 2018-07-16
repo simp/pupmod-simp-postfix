@@ -1,4 +1,4 @@
-* Tue Mar 13 2018 Trevor Vaughan <tvaughan@onyxpoint.com> - 5.1.1-0
+* Mon Jul 16 2018 Trevor Vaughan <tvaughan@onyxpoint.com> - 5.1.1-0
 - Ensure that only IPv4 is used if IPv6 is disabled on the system
 - Add support for OEL and Puppet 5
 
