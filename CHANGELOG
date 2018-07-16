@@ -1,3 +1,7 @@
+* Mon Jul 16 2018 Trevor Vaughan <tvaughan@onyxpoint.com> - 5.1.1-0
+- Ensure that only IPv4 is used if IPv6 is disabled on the system
+- Add support for OEL and Puppet 5
+
 * Tue Jun 19 2018 Nick Miller <nick.miller@onyxpoint.com> - 5.1.0-0
 - Avoid changing the permissions from the vendored RPM
   - /etc/postfix/* perms from 0640 to 0644
