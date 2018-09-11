@@ -1,3 +1,7 @@
+* Tue Sep 11 2018 Nicholas Markowski <nicholas.markowski@onyxpoint.com> - 5.1.1-0
+- Updated $app_pki_external_source to accept any string. This matches the
+  functionality of pki::copy.
+
 * Mon Jul 16 2018 Trevor Vaughan <tvaughan@onyxpoint.com> - 5.1.1-0
 - Ensure that only IPv4 is used if IPv6 is disabled on the system
 - Add support for OEL and Puppet 5
