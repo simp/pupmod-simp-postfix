@@ -1,13 +1,12 @@
 {
   "name": "simp-postfix",
-  "version": "5.1.1",
+  "version": "5.2.0",
   "author": "SIMP Team",
   "summary": "Manages the Postfix mail server",
   "license": "Apache-2.0",
   "source": "https://github.com/simp/pupmod-simp-postfix",
   "project_page": "https://github.com/simp/pupmod-simp-postfix",
   "issues_url": "https://simp-project.atlassian.net",
-  "data_provider": "hiera",
   "tags": [
     "simp",
     "postfix",
@@ -63,7 +62,7 @@
   "requirements": [
     {
       "name": "puppet",
-      "version_requirement": ">= 4.7.0 < 6.0.0"
+      "version_requirement": ">= 4.10.4 < 6.0.0"
     }
   ]
 }
