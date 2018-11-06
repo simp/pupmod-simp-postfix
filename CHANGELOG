@@ -1,6 +1,7 @@
 * Tue Sep 11 2018 Nicholas Markowski <nicholas.markowski@onyxpoint.com> - 5.2.0-0
 - Updated $app_pki_external_source to accept any string. This matches the
   functionality of pki::copy.
+- Update badges and contribution guide URL in README.md
 
 * Mon Sep 10 2018 Liz Nemsick <lnemsick.simp@gmail.com> - 5.2.0-0
 - Update Hiera 4 to Hiera 5
