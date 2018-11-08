@@ -1,0 +1,135 @@
+---
+version: 2.0.0
+checks:
+  oval:com.puppet.forge.simp.postfix.enable_server:
+    settings:
+      parameter: postfix::enable_server
+      value: false
+    type: puppet-class-parameter
+    controls:
+      nist_800_53_rev4:CM-7: true
+      disa_stig: true
+      RHEL-07-040480: true
+      SRG-OS-000480-GPOS-00227: true
+      cci:CCI-000366: true
+    identifiers:
+      nist_800_53_rev4:
+      - CM-7
+      disa_stig:
+      - RHEL-07-040480
+      - SRG-OS-000480-GPOS-00227
+      - CCI-000366
+  oval:com.puppet.forge.simp.postfix.server.enforce_tls:
+    settings:
+      parameter: postfix::server::enforce_tls
+      value: true
+    type: puppet-class-parameter
+    controls:
+      nist_800_53_rev4:SC-8: true
+      nist_800_53_rev4:SC-8:1: true
+      nist_800_53_rev4:SC-8:2: true
+      nist_800_53_rev4:SC-23: true
+    identifiers:
+      nist_800_53_rev4:
+      - SC-8
+      - SC-8:1
+      - SC-8:2
+      - SC-23
+  oval:com.puppet.forge.simp.postfix.server.firewall:
+    settings:
+      parameter: postfix::server::firewall
+      value: true
+    type: puppet-class-parameter
+    controls:
+      nist_800_53_rev4:AC-4: true
+      disa_stig: true
+      RHEL-07-040920: true
+      SRG-OS-000480-GPOS-00227: true
+      cci:CCI-000366: true
+    identifiers:
+      nist_800_53_rev4:
+      - AC-4
+      disa_stig:
+      - RHEL-07-040920
+      - SRG-OS-000480-GPOS-00227
+      - CCI-000366
+  oval:com.puppet.forge.simp.postfix.server.mandatory_ciphers:
+    settings:
+      parameter: postfix::server::mandatory_ciphers
+      value: true
+    type: puppet-class-parameter
+    controls:
+      nist_800_53_rev4:SC-8: true
+      nist_800_53_rev4:SC-8:1: true
+      nist_800_53_rev4:SC-8:2: true
+      nist_800_53_rev4:SC-23: true
+    identifiers:
+      nist_800_53_rev4:
+      - SC-8
+      - SC-8:1
+      - SC-8:2
+      - SC-23
+  oval:com.puppet.forge.simp.postfix.server.pki:
+    settings:
+      parameter: postfix::server::pki
+      value: true
+    type: puppet-class-parameter
+    controls:
+      nist_800_53_rev4:SC-8: true
+      nist_800_53_rev4:SC-8:1: true
+      nist_800_53_rev4:SC-8:2: true
+      nist_800_53_rev4:SC-23: true
+    identifiers:
+      nist_800_53_rev4:
+      - SC-8
+      - SC-8:1
+      - SC-8:2
+      - SC-23
+  oval:com.puppet.forge.simp.postfix.server.tls:
+    settings:
+      parameter: postfix::server::tls
+      value: true
+    type: puppet-class-parameter
+    controls:
+      nist_800_53_rev4:SC-8: true
+      nist_800_53_rev4:SC-8:1: true
+      nist_800_53_rev4:SC-8:2: true
+      nist_800_53_rev4:SC-23: true
+    identifiers:
+      nist_800_53_rev4:
+      - SC-8
+      - SC-8:1
+      - SC-8:2
+      - SC-23
+  oval:com.puppet.forge.simp.postfix.server.user_connect:
+    settings:
+      parameter: postfix::server::user_connect
+      value: true
+    type: puppet-class-parameter
+    controls:
+      nist_800_53_rev4:AC-1: true
+    identifiers:
+      nist_800_53_rev4:
+      - AC-1
+  oval:com.puppet.forge.simp.postfix.main_cf_hash:
+    settings:
+      parameter: postfix::main_cf_hash
+      value:
+        smtpd_client_restrictions:
+          value:
+          - permit_mynetworks
+          - reject
+    type: puppet-class-parameter
+    controls:
+      disa_stig: true
+      RHEL-07-040680: true
+      SRG-OS-000480-GPOS-00227: true
+      cci:CCI-000366: true
+    identifiers:
+      disa_stig:
+      - RHEL-07-040680
+      - SRG-OS-000480-GPOS-00227
+      - CCI-000366
+    confine:
+      osfamily: RedHat
+      operatingsystemmajrelease: '7'
