@@ -19,7 +19,7 @@ class postfix::config::root {
     set record="+.Sent"
     set postponed="+.Drafts"
     set spoolfile="/var/spool/mail/root"
-    mailboxes `echo -n "+ "; find ~/Maildir -type d -name ".*" -printf "+\'%f\' "`
+    mailboxes `echo -n "+ "; find ~/Maildir -type d -name ".*" -printf "+'%f' "`
     | MUTTRC
 
   file { '/root/.muttrc':
