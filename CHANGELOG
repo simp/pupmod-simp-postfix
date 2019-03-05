@@ -1,3 +1,6 @@
+* Tue Mar 05 2019 Chris Tessmer <chris.tessmer@onypoint.com> - 5.2.2-0
+- Fixed "unrecognized escape `\''" error in /root/.muttrc
+
 * Mon Mar 04 2019 Liz Nemsick <lnemsick.simp@gmail.com> - 5.2.1-0
 - Expanded the upper limit of the concat and stdlib Puppet module versions
 - Updated a URL in the README.md
