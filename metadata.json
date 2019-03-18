@@ -1,6 +1,6 @@
 {
   "name": "simp-postfix",
-  "version": "5.2.2",
+  "version": "5.2.1",
   "author": "SIMP Team",
   "summary": "Manages the Postfix mail server",
   "license": "Apache-2.0",

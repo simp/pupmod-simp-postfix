@@ -1,12 +1,10 @@
-* Tue Mar 05 2019 Chris Tessmer <chris.tessmer@onypoint.com> - 5.2.2-0
+* Tue Mar 05 2019 Chris Tessmer <chris.tessmer@onypoint.com> - 5.2.1-0
 - Fixed "unrecognized escape `\''" error in /root/.muttrc
+- Fix DOS formatting of CHANGELOG
 
 * Mon Mar 04 2019 Liz Nemsick <lnemsick.simp@gmail.com> - 5.2.1-0
 - Expanded the upper limit of the concat and stdlib Puppet module versions
 - Updated a URL in the README.md
-
-* Wed Feb 13 2019 Chris Tessmer <chris.tessmer@onypoint.com> -5.2.1-0
-- Fix DOS formatting of CHANGELOG
 
 * Tue Sep 11 2018 Nicholas Markowski <nicholas.markowski@onyxpoint.com> - 5.2.0-0
 - Updated $app_pki_external_source to accept any string. This matches the
