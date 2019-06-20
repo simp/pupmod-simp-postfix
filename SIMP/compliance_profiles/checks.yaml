@@ -7,13 +7,14 @@ checks:
       value: false
     type: puppet-class-parameter
     controls:
-      nist_800_53_rev4:CM-7: true
+      nist_800_53:rev4: true
+      nist_800_53:rev4:CM-7: true
       disa_stig: true
       RHEL-07-040480: true
       SRG-OS-000480-GPOS-00227: true
       cci:CCI-000366: true
     identifiers:
-      nist_800_53_rev4:
+      nist_800_53:rev4:
       - CM-7
       disa_stig:
       - RHEL-07-040480
@@ -25,12 +26,13 @@ checks:
       value: true
     type: puppet-class-parameter
     controls:
-      nist_800_53_rev4:SC-8: true
-      nist_800_53_rev4:SC-8:1: true
-      nist_800_53_rev4:SC-8:2: true
-      nist_800_53_rev4:SC-23: true
+      nist_800_53:rev4: true
+      nist_800_53:rev4:SC-8: true
+      nist_800_53:rev4:SC-8:1: true
+      nist_800_53:rev4:SC-8:2: true
+      nist_800_53:rev4:SC-23: true
     identifiers:
-      nist_800_53_rev4:
+      nist_800_53:rev4:
       - SC-8
       - SC-8:1
       - SC-8:2
@@ -41,13 +43,14 @@ checks:
       value: true
     type: puppet-class-parameter
     controls:
-      nist_800_53_rev4:AC-4: true
+      nist_800_53:rev4: true
+      nist_800_53:rev4:AC-4: true
       disa_stig: true
       RHEL-07-040920: true
       SRG-OS-000480-GPOS-00227: true
       cci:CCI-000366: true
     identifiers:
-      nist_800_53_rev4:
+      nist_800_53:rev4:
       - AC-4
       disa_stig:
       - RHEL-07-040920
@@ -59,12 +62,13 @@ checks:
       value: true
     type: puppet-class-parameter
     controls:
-      nist_800_53_rev4:SC-8: true
-      nist_800_53_rev4:SC-8:1: true
-      nist_800_53_rev4:SC-8:2: true
-      nist_800_53_rev4:SC-23: true
+      nist_800_53:rev4: true
+      nist_800_53:rev4:SC-8: true
+      nist_800_53:rev4:SC-8:1: true
+      nist_800_53:rev4:SC-8:2: true
+      nist_800_53:rev4:SC-23: true
     identifiers:
-      nist_800_53_rev4:
+      nist_800_53:rev4:
       - SC-8
       - SC-8:1
       - SC-8:2
@@ -75,12 +79,13 @@ checks:
       value: true
     type: puppet-class-parameter
     controls:
-      nist_800_53_rev4:SC-8: true
-      nist_800_53_rev4:SC-8:1: true
-      nist_800_53_rev4:SC-8:2: true
-      nist_800_53_rev4:SC-23: true
+      nist_800_53:rev4: true
+      nist_800_53:rev4:SC-8: true
+      nist_800_53:rev4:SC-8:1: true
+      nist_800_53:rev4:SC-8:2: true
+      nist_800_53:rev4:SC-23: true
     identifiers:
-      nist_800_53_rev4:
+      nist_800_53:rev4:
       - SC-8
       - SC-8:1
       - SC-8:2
@@ -91,12 +96,13 @@ checks:
       value: true
     type: puppet-class-parameter
     controls:
-      nist_800_53_rev4:SC-8: true
-      nist_800_53_rev4:SC-8:1: true
-      nist_800_53_rev4:SC-8:2: true
-      nist_800_53_rev4:SC-23: true
+      nist_800_53:rev4: true
+      nist_800_53:rev4:SC-8: true
+      nist_800_53:rev4:SC-8:1: true
+      nist_800_53:rev4:SC-8:2: true
+      nist_800_53:rev4:SC-23: true
     identifiers:
-      nist_800_53_rev4:
+      nist_800_53:rev4:
       - SC-8
       - SC-8:1
       - SC-8:2
@@ -107,9 +113,10 @@ checks:
       value: true
     type: puppet-class-parameter
     controls:
-      nist_800_53_rev4:AC-1: true
+      nist_800_53:rev4: true
+      nist_800_53:rev4:AC-1: true
     identifiers:
-      nist_800_53_rev4:
+      nist_800_53:rev4:
       - AC-1
   oval:com.puppet.forge.simp.postfix.main_cf_hash:
     settings:
