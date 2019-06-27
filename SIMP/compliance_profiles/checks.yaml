@@ -37,46 +37,10 @@ checks:
       - SC-8:1
       - SC-8:2
       - SC-23
-  oval:com.puppet.forge.simp.postfix.server.firewall:
-    settings:
-      parameter: postfix::server::firewall
-      value: true
-    type: puppet-class-parameter
-    controls:
-      nist_800_53:rev4: true
-      nist_800_53:rev4:AC-4: true
-      disa_stig: true
-      RHEL-07-040920: true
-      SRG-OS-000480-GPOS-00227: true
-      cci:CCI-000366: true
-    identifiers:
-      nist_800_53:rev4:
-      - AC-4
-      disa_stig:
-      - RHEL-07-040920
-      - SRG-OS-000480-GPOS-00227
-      - CCI-000366
   oval:com.puppet.forge.simp.postfix.server.mandatory_ciphers:
     settings:
       parameter: postfix::server::mandatory_ciphers
       value: 'high'
-    type: puppet-class-parameter
-    controls:
-      nist_800_53:rev4: true
-      nist_800_53:rev4:SC-8: true
-      nist_800_53:rev4:SC-8:1: true
-      nist_800_53:rev4:SC-8:2: true
-      nist_800_53:rev4:SC-23: true
-    identifiers:
-      nist_800_53:rev4:
-      - SC-8
-      - SC-8:1
-      - SC-8:2
-      - SC-23
-  oval:com.puppet.forge.simp.postfix.server.pki:
-    settings:
-      parameter: postfix::server::pki
-      value: true
     type: puppet-class-parameter
     controls:
       nist_800_53:rev4: true
