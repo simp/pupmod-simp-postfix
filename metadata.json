@@ -1,6 +1,6 @@
 {
   "name": "simp-postfix",
-  "version": "5.3.1",
+  "version": "5.4.0",
   "author": "SIMP Team",
   "summary": "Manages the Postfix mail server",
   "license": "Apache-2.0",
@@ -62,7 +62,7 @@
   "requirements": [
     {
       "name": "puppet",
-      "version_requirement": ">= 4.10.4 < 7.0.0"
+      "version_requirement": ">= 5.0.0 < 7.0.0"
     }
   ]
 }
