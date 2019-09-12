@@ -3,7 +3,7 @@ require 'json'
 
 test_name 'Check Inspec for simp profile'
 
-describe 'run inspec against the appropriate fixtures for simp postfix profile' do
+describe 'run inspec against the appropriate fixtures' do
 
   profiles_to_validate = ['disa_stig']
 
