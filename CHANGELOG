@@ -1,3 +1,6 @@
+* Wed Sep 11 2019 Trevor Vaughan <tvaughan@onyxpoint.com> - 5.4.0-0
+- Add support for simp-simplib 4
+
 * Fri Aug 02 2019 Robert Vincent <pillarsdotnet@gmail.com> - 5.4.0-0
 - Drop Puppet 4 support
 - Add Puppet 6 support
