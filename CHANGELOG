@@ -1,3 +1,6 @@
+* Tue Dec 24 2019 Trevor Vaughan <tvaughan@onyxpoint.com> - 5.4.0-0
+- Add EL8 support
+
 * Wed Sep 11 2019 Trevor Vaughan <tvaughan@onyxpoint.com> - 5.4.0-0
 - Add support for simp-simplib 4
 

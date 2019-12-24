@@ -94,6 +94,8 @@ class postfix::server (
     }
 
     if $firewall {
+      simplib::assert_optional_dependency($module_name, 'simp/iptables')
+
       include 'iptables'
 
       $_dports = $enable_user_connect ? {
@@ -108,7 +110,11 @@ class postfix::server (
     }
 
     if $enable_tls {
-      if $haveged { include 'haveged' }
+      if $haveged {
+        simplib::assert_optional_dependency($module_name, 'simp/haveged')
+
+        include 'haveged'
+      }
 
       if $enforce_tls {
         postfix_main_cf { 'smtp_enforce_tls': value => 'yes' }
