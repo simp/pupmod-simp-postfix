@@ -22,6 +22,11 @@
 
 * [`postfix_main_cf`](#postfix_main_cf): Modifies settings in the postfix main.cf configuration file.
 
+**Data types**
+
+* [`Postfix::InetProtocols`](#postfixinetprotocols): Allowed inet protocol settings
+* [`Postfix::ManCiphers`](#postfixmanciphers): Allowed mandatory ciphers
+
 ## Classes
 
 ### postfix
@@ -314,4 +319,18 @@ The following parameters are available in the `postfix_main_cf` type.
 namevar
 
 The parameter to modify.
+
+## Data types
+
+### Postfix::InetProtocols
+
+Allowed inet protocol settings
+
+Alias of `Array[Enum['all','ipv4','ipv6']]`
+
+### Postfix::ManCiphers
+
+Allowed mandatory ciphers
+
+Alias of `Enum['export', 'low', 'medium', 'high', 'null']`
 

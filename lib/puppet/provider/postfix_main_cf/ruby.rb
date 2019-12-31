@@ -1,4 +1,7 @@
 Puppet::Type.type(:postfix_main_cf).provide(:ruby) do
+  desc <<-EOM
+    Provides for setting items in the postfix main.cf configuration file.
+  EOM
 
   commands :postconf => 'postconf'
 
