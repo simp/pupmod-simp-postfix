@@ -26,14 +26,14 @@ describe 'postfix' do
 
       it 'should be installed' do
         on(host, 'puppet resource package postfix') do
-          expect(stdout).to_not match(/ensure => 'absent'/)
+          expect(stdout).to_not match(/ensure\s*=> 'absent'/)
         end
       end
 
       it 'should be running' do
         on(host, 'puppet resource service postfix') do
-          expect(stdout).to match(/ensure => 'running'/)
-          expect(stdout).to match(/enable => 'true'/)
+          expect(stdout).to match(/ensure\s*=> 'running'/)
+          expect(stdout).to match(/enable\s*=> 'true'/)
         end
       end
       it 'should add postfix::main_cf_hash options to file' do
