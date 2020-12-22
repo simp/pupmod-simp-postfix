@@ -18,11 +18,6 @@ HOSTS:
         gpgkeys:
           - https://packages.chef.io/chef.asc
 
-  el6:
-    platform:   el-6-x86_64
-    box:        centos/6
-    hypervisor: <%= hypervisor %>
-
   el8:
     platform:   el-8-x86_64
     box:        centos/8
