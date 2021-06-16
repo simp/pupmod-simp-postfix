@@ -1,6 +1,6 @@
 {
   "name": "simp-postfix",
-  "version": "5.5.1",
+  "version": "5.6.0",
   "author": "SIMP Team",
   "summary": "Manages the Postfix mail server",
   "license": "Apache-2.0",
@@ -17,7 +17,7 @@
   "dependencies": [
     {
       "name": "puppetlabs/concat",
-      "version_requirement": ">= 3.0.0 < 7.0.0"
+      "version_requirement": ">= 6.4.0 < 8.0.0"
     },
     {
       "name": "simp/simplib",
@@ -25,7 +25,7 @@
     },
     {
       "name": "puppetlabs/stdlib",
-      "version_requirement": ">= 4.13.1 < 7.0.0"
+      "version_requirement": ">= 6.18.0 < 8.0.0"
     }
   ],
   "simp": {
@@ -66,7 +66,7 @@
   "requirements": [
     {
       "name": "puppet",
-      "version_requirement": ">= 5.0.0 < 7.0.0"
+      "version_requirement": ">= 6.22.1 < 8.0.0"
     }
   ]
 }
