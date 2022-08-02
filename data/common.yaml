@@ -11,3 +11,4 @@ postfix::main_cf_hash:
       - 'permit_mynetworks'
       - 'reject'
 
+postfix::aliases: {}
