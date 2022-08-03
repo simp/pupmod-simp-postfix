@@ -1,4 +1,4 @@
-* Tue Aug 02 2022 Mike Riddle <mike@sicura.us> - 5.6.1
+* Tue Aug 02 2022 Mike Riddle <mike@sicura.us> - 5.7.0
 - Added the ability for users to specify aliases via hieradata
 
 * Wed Jun 16 2021 Chris Tessmer <chris.tessmer@onyxpoint.com> - 5.6.0
