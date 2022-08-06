@@ -21,6 +21,14 @@
 # @param inet_protocols
 #   The protocols to use when enabling the service
 #
+# @param aliases
+#   Hash of alias key/value pairs that can be set in hieradata
+#   Example:
+#     ---
+#     postfix::aliases:
+#       'root': 'system.administrator@mail.mil'
+#       'foo.bar': 'fbar, fbar@example.com'
+#
 # @author https://github.com/simp/pupmod-simp-postfix/graphs/contributors
 #
 class postfix (
@@ -28,7 +36,8 @@ class postfix (
   Boolean                $enable_server  = false,
   String                 $postfix_ensure = simplib::lookup('simp_options::package_ensure', { 'default_value' => 'installed' }),
   String                 $mutt_ensure    = simplib::lookup('simp_options::package_ensure', { 'default_value' => 'installed' }),
-  Postfix::InetProtocols $inet_protocols = fact('ipv6_enabled') ? { true => ['all'], default => ['ipv4'] }
+  Postfix::InetProtocols $inet_protocols = fact('ipv6_enabled') ? { true => ['all'], default => ['ipv4'] },
+  Optional[Hash]         $aliases,
 ) {
 
   include 'postfix::install'
@@ -43,6 +52,12 @@ class postfix (
     include 'postfix::server'
     Class['postfix::server']
     ~> Class['postfix::service']
+  }
+
+  $aliases.each | $key, $value| {
+    postfix::alias { $key:
+      values => $value,
+    }
   }
 
 }
