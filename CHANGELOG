@@ -1,3 +1,6 @@
+* Mon Jul 24 2023 Chris Tessmer <chris.tessmer@onyxpoint.com> - 5.8.0
+- Add RockyLinux 8 support
+
 * Tue Aug 02 2022 Mike Riddle <mike@sicura.us> - 5.7.0
 - Added the ability for users to specify aliases via hieradata
 
