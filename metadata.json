@@ -1,6 +1,6 @@
 {
   "name": "simp-postfix",
-  "version": "5.8.0",
+  "version": "5.9.0",
   "author": "SIMP Team",
   "summary": "Manages the Postfix mail server",
   "license": "Apache-2.0",
@@ -64,6 +64,12 @@
     },
     {
       "operatingsystem": "Rocky",
+      "operatingsystemrelease": [
+        "8"
+      ]
+    },
+    {
+      "operatingsystem": "AlmaLinux",
       "operatingsystemrelease": [
         "8"
       ]
