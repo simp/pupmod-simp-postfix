@@ -6,17 +6,17 @@ describe provider_class do
   before :each do
     @resource = Puppet::Type::Postfix_main_cf.new(:name  => 'mail_owner', :value => 'postfix')
     @provider = provider_class.new(@resource)
-    @provider.stubs(:postconf).with('inet_interfaces').returns "inet_interfaces = all\n"
+    allow(@provider).to receive(:postconf).with('inet_interfaces').and_return "inet_interfaces = all\n"
   end
 
   context "when matching" do
     it 'should do nothing if the postconf command returns a matching value' do
-      @provider.stubs(:postconf).with('mail_owner').returns "mail_owner = postfix\n"
+      allow(@provider).to receive(:postconf).with('mail_owner').and_return "mail_owner = postfix\n"
       expect(@provider.value).to eq('postfix')
     end
 
     it 'should return an error if the postconf command returns an invalid result' do
-      @provider.stubs(:postconf).with('mail_owner').returns "unknown entry\n"
+      allow(@provider).to receive(:postconf).with('mail_owner').and_return "unknown entry\n"
       expect { expect(@provider.value).to }.to raise_error(Puppet::Error,/not recognized by postconf/)
     end
 
