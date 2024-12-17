@@ -8,6 +8,7 @@ describe 'postfix::install' do
 
         context 'default postfix class parameters' do
           let(:pre_condition) { 'include postfix' }
+
           it { is_expected.to compile.with_all_deps }
           it { is_expected.to contain_group('postfix') }
           it { is_expected.to contain_group('postdrop') }
@@ -17,13 +18,14 @@ describe 'postfix::install' do
         end
 
         context 'postfix class with ensure parameters set' do
-          let(:pre_condition) { <<-EOM.sub(/^ {12}/, '')
+          let(:pre_condition) do
+            <<-EOM.sub(%r{^ {12}}, '')
             class { 'postfix':
               postfix_ensure => 'latest',
               mutt_ensure    => '1.2.3'
             }
             EOM
-          }
+          end
 
           it { is_expected.to compile.with_all_deps }
           it { is_expected.to contain_package('postfix').with_ensure('latest') }
