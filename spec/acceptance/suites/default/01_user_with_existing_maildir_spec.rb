@@ -23,9 +23,11 @@ describe 'postfix' do
         apply_manifest_on(host, manifest, catch_failures: true)
       end
 
+      # rubocop:disable RSpec/RepeatedExample
       it 'is idempotent' do
         apply_manifest_on(host, manifest, catch_changes: true)
       end
+      # rubocop:enable RSpec/RepeatedExample
 
       it 'has a test user' do
         on(host, %(puppet resource user #{test_user} ensure=present))
@@ -36,9 +38,11 @@ describe 'postfix' do
         on(host, %(echo 'Test' | mail -s 'Test Message' #{test_user}))
       end
 
+      # rubocop:disable RSpec/RepeatedExample
       it 'does not have any changes during a puppet run' do
         apply_manifest_on(host, manifest, catch_changes: true)
       end
+      # rubocop:enable RSpec/RepeatedExample
     end
   end
 end
