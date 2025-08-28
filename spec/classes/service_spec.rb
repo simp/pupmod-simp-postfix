@@ -11,12 +11,12 @@ describe 'postfix::service' do
 
           it { is_expected.to compile.with_all_deps }
           it {
-            is_expected.to contain_service('postfix').with({
-                                                             'ensure' => 'running',
-            'enable' => true,
-            'hasrestart' => true,
-            'hasstatus' => true
-                                                           })
+            is_expected.to contain_service('postfix').with(
+              'ensure' => 'running',
+              'enable' => true,
+              'hasrestart' => true,
+              'hasstatus' => true,
+            )
           }
         end
       end

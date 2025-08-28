@@ -19,11 +19,11 @@ describe 'postfix::install' do
 
         context 'postfix class with ensure parameters set' do
           let(:pre_condition) do
-            <<-EOM.sub(%r{^ {12}}, '')
-            class { 'postfix':
-              postfix_ensure => 'latest',
-              mutt_ensure    => '1.2.3'
-            }
+            <<~EOM
+              class { 'postfix':
+                postfix_ensure => 'latest',
+                mutt_ensure    => '1.2.3',
+              }
             EOM
           end
 

@@ -51,17 +51,17 @@ describe 'postfix::config' do
 
         context 'postfix class with main_cf_hash set' do
           let(:pre_condition) do
-            <<-EOM.gsub(%r{^\s+}, '')
-            class { 'postfix':
-              main_cf_hash => {
-                'address_verify_cache_cleanup_interval' => {
-                  'value' => '5h'
-                },
-                'allow_mail_to_commands' => {
-                  'value' => [ 'alias', 'forward', 'include' ]
+            <<~EOM
+              class { 'postfix':
+                main_cf_hash => {
+                  'address_verify_cache_cleanup_interval' => {
+                    'value' => '5h'
+                  },
+                  'allow_mail_to_commands' => {
+                    'value' => [ 'alias', 'forward', 'include' ]
+                  }
                 }
               }
-            }
             EOM
           end
 
@@ -73,20 +73,20 @@ describe 'postfix::config' do
 
         context 'postfix class with main_cf_hash set with dupes' do
           let(:pre_condition) do
-            <<-EOM.gsub(%r{^\s+}, '')
-            class { 'postfix':
-              main_cf_hash => {
-                'address_verify_cache_cleanup_interval' => {
-                  'value' => '5h'
-                },
-                'allow_mail_to_commands' => {
-                  'value' => [ 'alias', 'forward', 'include' ]
-                },
-                'inet_protocols' => {
-                  'value' => ['hello']
+            <<~EOM
+              class { 'postfix':
+                main_cf_hash => {
+                  'address_verify_cache_cleanup_interval' => {
+                    'value' => '5h'
+                  },
+                  'allow_mail_to_commands' => {
+                    'value' => [ 'alias', 'forward', 'include' ]
+                  },
+                  'inet_protocols' => {
+                    'value' => ['hello']
+                  }
                 }
               }
-            }
             EOM
           end
 

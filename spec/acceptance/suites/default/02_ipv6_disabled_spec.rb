@@ -6,13 +6,13 @@ describe 'postfix' do
   hosts.each do |host|
     context 'with ipv6 explicitly disabled' do
       let(:manifest) do
-        <<-EOS
-          include '::postfix'
+        <<~EOS
+          include 'postfix'
         EOS
       end
       let(:hieradata) do
         {
-          'simp_options::pki::source' => '/etc/pki/simp-testing/pki/'
+          'simp_options::pki::source' => '/etc/pki/simp-testing/pki/',
         }
       end
 

@@ -45,7 +45,7 @@ describe 'postfix::server' do
           it {
             is_expected.to create_iptables__listen__tcp_stateful('allow_postfix').with
             {
-              'dports' => ['25', '587']
+              'dports' => ['25', '587'],
             }
           }
           it { is_expected.to create_postfix_main_cf('smtp_use_tls') }
@@ -59,7 +59,7 @@ describe 'postfix::server' do
           let(:params) do
             {
               enable_user_connect: false,
-           firewall: true
+              firewall: true,
             }
           end
 
@@ -70,7 +70,7 @@ describe 'postfix::server' do
           let(:params) do
             {
               firewall: true,
-           enable_tls: false
+              enable_tls: false,
             }
           end
 
@@ -92,7 +92,7 @@ describe 'postfix::server' do
           let(:params) do
             {
               firewall: true,
-           enforce_tls: false
+              enforce_tls: false,
             }
           end
 
