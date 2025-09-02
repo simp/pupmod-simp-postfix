@@ -4,47 +4,48 @@ test_name 'postfix'
 
 describe 'postfix' do
   hosts.each do |host|
-
     context 'with ipv6 explicitly disabled' do
-      let(:manifest) {
-        <<-EOS
-          include '::postfix'
+      let(:manifest) do
+        <<~EOS
+          include 'postfix'
         EOS
-      }
-      let(:hieradata) {{
-        'simp_options::pki::source' => '/etc/pki/simp-testing/pki/'
-      }}
+      end
+      let(:hieradata) do
+        {
+          'simp_options::pki::source' => '/etc/pki/simp-testing/pki/',
+        }
+      end
 
       # SIMP-4418
-      it 'should disable ipv6 on the system, but not in the kernel' do
+      it 'disables ipv6 on the system, but not in the kernel' do
         on(host, 'sysctl -w net.ipv6.conf.all.disable_ipv6=1')
         on(host, 'sysctl -w net.ipv6.conf.default.disable_ipv6=1')
         on(host, 'sysctl -p')
       end
 
-      it 'should stop and disable postfix' do
+      it 'stops and disable postfix' do
         on(host, 'puppet resource service postfix ensure=stopped enable=false')
       end
 
-      it 'should work with no errors' do
+      it 'works with no errors' do
         set_hieradata_on(host, hieradata)
-        apply_manifest_on(host, manifest, :catch_failures => true)
+        apply_manifest_on(host, manifest, catch_failures: true)
       end
 
-      it 'should be idempotent' do
-        apply_manifest_on(host, manifest, :catch_changes => true)
+      it 'is idempotent' do
+        apply_manifest_on(host, manifest, catch_changes: true)
       end
 
-      it 'should be installed' do
+      it 'is installed' do
         on(host, 'puppet resource package postfix') do
-          expect(stdout).to_not match(/ensure\s*=> 'absent'/)
+          expect(stdout).not_to match(%r{ensure\s*=> 'absent'})
         end
       end
 
-      it 'should be running' do
+      it 'is running' do
         on(host, 'puppet resource service postfix') do
-          expect(stdout).to match(/ensure\s*=> 'running'/)
-          expect(stdout).to match(/enable\s*=> 'true'/)
+          expect(stdout).to match(%r{ensure\s*=> 'running'})
+          expect(stdout).to match(%r{enable\s*=> 'true'})
         end
       end
     end

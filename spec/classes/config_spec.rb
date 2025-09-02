@@ -39,7 +39,7 @@ describe 'postfix::config' do
             '/usr/libexec/postfix',
             '/var/spool/postfix',
             '/var/spool/mail',
-            '/var/mail'
+            '/var/mail',
           ].each do |file|
             it { is_expected.to contain_file(file) }
           end
@@ -50,19 +50,20 @@ describe 'postfix::config' do
         end
 
         context 'postfix class with main_cf_hash set' do
-          let(:pre_condition) {<<-EOM.gsub(/^\s+/,'')
-            class { 'postfix':
-              main_cf_hash => {
-                'address_verify_cache_cleanup_interval' => {
-                  'value' => '5h'
-                },
-                'allow_mail_to_commands' => {
-                  'value' => [ 'alias', 'forward', 'include' ]
+          let(:pre_condition) do
+            <<~EOM
+              class { 'postfix':
+                main_cf_hash => {
+                  'address_verify_cache_cleanup_interval' => {
+                    'value' => '5h'
+                  },
+                  'allow_mail_to_commands' => {
+                    'value' => [ 'alias', 'forward', 'include' ]
+                  }
                 }
               }
-            }
             EOM
-          }
+          end
 
           it { is_expected.to compile.with_all_deps }
           it { is_expected.to contain_postfix_main_cf('inet_protocols') }
@@ -71,22 +72,23 @@ describe 'postfix::config' do
         end
 
         context 'postfix class with main_cf_hash set with dupes' do
-          let(:pre_condition) {<<-EOM.gsub(/^\s+/,'')
-            class { 'postfix':
-              main_cf_hash => {
-                'address_verify_cache_cleanup_interval' => {
-                  'value' => '5h'
-                },
-                'allow_mail_to_commands' => {
-                  'value' => [ 'alias', 'forward', 'include' ]
-                },
-                'inet_protocols' => {
-                  'value' => ['hello']
+          let(:pre_condition) do
+            <<~EOM
+              class { 'postfix':
+                main_cf_hash => {
+                  'address_verify_cache_cleanup_interval' => {
+                    'value' => '5h'
+                  },
+                  'allow_mail_to_commands' => {
+                    'value' => [ 'alias', 'forward', 'include' ]
+                  },
+                  'inet_protocols' => {
+                    'value' => ['hello']
+                  }
                 }
               }
-            }
             EOM
-          }
+          end
 
           it { is_expected.to compile.with_all_deps }
           it { is_expected.to contain_postfix_main_cf('inet_protocols') }
@@ -97,15 +99,16 @@ describe 'postfix::config' do
 
         context 'postfix class when ipv6_enabled fact false ' do
           let(:pre_condition) { 'include postfix' }
-          let(:facts) { os_facts.merge({:ipv6_enabled => false}) }
+          let(:facts) { os_facts.merge({ ipv6_enabled: false }) }
+
           it { is_expected.to compile.with_all_deps }
           it { is_expected.to contain_postfix_main_cf('inet_protocols').with_value('ipv4') }
-
         end
 
         context 'postfix class when ipv6_enabled fact true ' do
           let(:pre_condition) { 'include postfix' }
-          let(:facts) { os_facts.merge({:ipv6_enabled => true}) }
+          let(:facts) { os_facts.merge({ ipv6_enabled: true }) }
+
           it { is_expected.to compile.with_all_deps }
           it { is_expected.to contain_postfix_main_cf('inet_protocols').with_value('all') }
         end
