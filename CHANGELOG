@@ -1,3 +1,7 @@
+* Thu Jan 15 2026 Steven Pritchard <steve@sicura.us> - 5.13.0
+- Fix noop run failure for postfix class (#80)
+- Support simp-simplib 5.x
+
 * Wed Aug 27 2025 Steven Pritchard <steve@sicura.us> - 5.12.1
 - Clean up for rubocop
 

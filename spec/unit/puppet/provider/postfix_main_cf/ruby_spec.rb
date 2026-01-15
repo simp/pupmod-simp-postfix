@@ -7,6 +7,8 @@ describe provider_class do
   let(:provider) { provider_class.new(resource) }
 
   before :each do
+    # Mock that the postconf command is available
+    allow(provider).to receive(:command).with(:postconf).and_return('/usr/sbin/postconf')
     allow(provider).to receive(:postconf).with('inet_interfaces').and_return "inet_interfaces = all\n"
   end
 
@@ -24,6 +26,13 @@ describe provider_class do
     it 'attempts an update if the postconf command returns a non-matching value', skip: 'This test  is causing segfault errors for unknown reasons' do
       provider.expects(:postconf).with('-e', 'mail_owner=foo')
       provider.send(:value=, 'foo')
+    end
+  end
+
+  context 'when postconf command is not available' do
+    it 'returns nil when postconf is not available (e.g., package not installed)' do
+      allow(provider).to receive(:command).with(:postconf).and_return(nil)
+      expect(provider.value).to be_nil
     end
   end
 end
