@@ -18,6 +18,8 @@ describe 'postfix' do
 
       # SIMP-4418
       it 'disables ipv6 on the system, but not in the kernel' do
+        result = on(host, 'type -p sysctl', acceptable_exit_codes: [0, 1])
+        skip 'sysctl command not found' if result.exit_code == 1
         on(host, 'sysctl -w net.ipv6.conf.all.disable_ipv6=1')
         on(host, 'sysctl -w net.ipv6.conf.default.disable_ipv6=1')
         on(host, 'sysctl -p')
