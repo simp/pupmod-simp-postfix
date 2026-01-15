@@ -7,6 +7,8 @@ describe provider_class do
   let(:provider) { provider_class.new(resource) }
 
   before :each do
+    # Mock that the postconf command is available
+    allow(provider).to receive(:command).with(:postconf).and_return('/usr/sbin/postconf')
     allow(provider).to receive(:postconf).with('inet_interfaces').and_return "inet_interfaces = all\n"
   end
 
