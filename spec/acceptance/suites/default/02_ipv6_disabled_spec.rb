@@ -37,15 +37,15 @@ describe 'postfix' do
       end
 
       it 'is installed' do
-        on(host, 'puppet resource package postfix') do
-          expect(stdout).not_to match(%r{ensure\s*=> 'absent'})
+        on(host, 'puppet resource package postfix') do |result|
+          expect(result.stdout).not_to match(%r{ensure\s*=> 'absent'})
         end
       end
 
       it 'is running' do
-        on(host, 'puppet resource service postfix') do
-          expect(stdout).to match(%r{ensure\s*=> 'running'})
-          expect(stdout).to match(%r{enable\s*=> 'true'})
+        on(host, 'puppet resource service postfix') do |result|
+          expect(result.stdout).to match(%r{ensure\s*=> 'running'})
+          expect(result.stdout).to match(%r{enable\s*=> 'true'})
         end
       end
     end
