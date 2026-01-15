@@ -26,4 +26,11 @@ describe provider_class do
       provider.send(:value=, 'foo')
     end
   end
+
+  context 'when postconf command is not available' do
+    it 'returns nil when postconf is not available (e.g., package not installed)' do
+      allow(provider).to receive(:command).with(:postconf).and_return(nil)
+      expect(provider.value).to be_nil
+    end
+  end
 end

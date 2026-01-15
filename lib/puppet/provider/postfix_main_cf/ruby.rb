@@ -3,7 +3,7 @@ Puppet::Type.type(:postfix_main_cf).provide(:ruby) do
     Provides for setting items in the postfix main.cf configuration file.
   EOM
 
-  commands postconf: 'postconf'
+  optional_commands postconf: 'postconf'
 
   # This works around a bug in postfix where the configuration cannot be
   # processed if IPv6 is disabled via sysctl
@@ -25,6 +25,10 @@ Puppet::Type.type(:postfix_main_cf).provide(:ruby) do
   end
 
   def value
+    # Return nil if postconf command is not available (e.g., package not installed)
+    # This allows the provider to work in noop mode
+    return nil unless command(:postconf)
+
     # This needs to happen prior to any query of postconf to work around the
     # IPv6 bug
     fix_inet_interfaces
