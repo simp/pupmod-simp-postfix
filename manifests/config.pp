@@ -23,14 +23,13 @@ class postfix::config {
   }
 
   file { [
-    '/etc/postfix/postfix-script',
-    '/etc/postfix/post-install'
-  ]:
-    owner => 'root',
-    group => 'postfix',
-    mode  => '0750';
+      '/etc/postfix/postfix-script',
+      '/etc/postfix/post-install'
+    ]:
+      owner => 'root',
+      group => 'postfix',
+      mode  => '0750';
   }
-
 
   #---
   # Files to be templated. Templates are commented.
@@ -47,17 +46,17 @@ class postfix::config {
 
   # postmap files.
   file { [
-    '/etc/postfix/access',
-    '/etc/postfix/canonical',
-    '/etc/postfix/generic',
-    '/etc/postfix/relocated',
-    '/etc/postfix/transport',
-    '/etc/postfix/virtual',
-  ]:
-    ensure => 'file',
-    owner  => 'root',
-    group  => 'root',
-    mode   => '0644';
+      '/etc/postfix/access',
+      '/etc/postfix/canonical',
+      '/etc/postfix/generic',
+      '/etc/postfix/relocated',
+      '/etc/postfix/transport',
+      '/etc/postfix/virtual',
+    ]:
+      ensure => 'file',
+      owner  => 'root',
+      group  => 'root',
+      mode   => '0644';
     #content => template('postfix/postmap.erb'),
     #notify => Exec['postmap']
   }
@@ -65,16 +64,16 @@ class postfix::config {
   # Content checks
   # These need defines to add stuff to them.
   file { [
-    '/etc/postfix/header_checks',
-    '/etc/postfix/mime_header_checks',
-    '/etc/postfix/nested_header_checks',
-    '/etc/postfix/body_checks',
-  ]:
-    ensure => 'file',
-    owner  => 'root',
-    group  => 'root',
-    mode   => '0644',
-    #content => template('postfix/checks.erb'),
+      '/etc/postfix/header_checks',
+      '/etc/postfix/mime_header_checks',
+      '/etc/postfix/nested_header_checks',
+      '/etc/postfix/body_checks',
+    ]:
+      ensure => 'file',
+      owner  => 'root',
+      group  => 'root',
+      mode   => '0644',
+      #content => template('postfix/checks.erb'),
   }
 
   file { '/usr/libexec/postfix':
@@ -103,5 +102,4 @@ class postfix::config {
     target => '/var/spool/mail',
     force  => true
   }
-
 }

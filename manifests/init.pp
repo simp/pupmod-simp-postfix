@@ -39,7 +39,6 @@ class postfix (
   Postfix::InetProtocols $inet_protocols = fact('ipv6_enabled') ? { true => ['all'], default => ['ipv4'] },
   Optional[Hash]         $aliases,
 ) {
-
   include 'postfix::install'
   include 'postfix::config'
   include 'postfix::service'
@@ -59,5 +58,4 @@ class postfix (
       values => $value,
     }
   }
-
 }

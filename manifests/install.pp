@@ -20,8 +20,8 @@ class postfix::install {
     require   => Package['postfix']
   }
 
-  package { 'postfix': ensure => $::postfix::postfix_ensure }
-  package { 'mutt':    ensure => $::postfix::mutt_ensure }
+  package { 'postfix': ensure => $postfix::postfix_ensure }
+  package { 'mutt':    ensure => $postfix::mutt_ensure }
 
   user { 'postfix':
     ensure     => 'present',
@@ -33,5 +33,4 @@ class postfix::install {
     shell      => '/sbin/nologin',
     require    => Package['postfix']
   }
-
 }

@@ -12,12 +12,10 @@
 #
 define postfix::alias (
   String[1] $values
-){
-
+) {
   concat::fragment { "postfix+${name}.alias":
     order   => 2,
     target  => '/etc/aliases',
     content => "${name}: ${values}\n"
   }
-
 }

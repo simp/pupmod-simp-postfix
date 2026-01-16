@@ -9,5 +9,4 @@ class postfix::service {
     hasrestart => true,
     hasstatus  => true
   }
-
 }
