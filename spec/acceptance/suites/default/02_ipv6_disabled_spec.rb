@@ -20,6 +20,11 @@ describe 'postfix' do
       it 'disables ipv6 on the system, but not in the kernel' do
         result = on(host, 'type -p sysctl', acceptable_exit_codes: [0, 1])
         skip 'sysctl command not found' if result.exit_code == 1
+
+        container_runtimes = ['docker', 'lxc', 'podman', 'crio', 'systemd-nspawn', 'container_other'].freeze
+        virtual = fact_on(host, 'virtual')
+        skip "sysctl ipv6 disable not applicable on #{virtual}" if container_runtimes.include?(virtual)
+
         on(host, 'sysctl -w net.ipv6.conf.all.disable_ipv6=1')
         on(host, 'sysctl -w net.ipv6.conf.default.disable_ipv6=1')
         on(host, 'sysctl -p')
