@@ -4,8 +4,7 @@ class postfix::config::aliases {
   assert_private()
 
   exec { 'postalias':
-    command     => '/usr/sbin/postalias /etc/aliases; \
-                    /usr/sbin/postalias /etc/aliases.db',
+    command     => '/usr/sbin/postalias /etc/aliases',
     subscribe   => Concat['/etc/aliases'],
     refreshonly => true,
   }
