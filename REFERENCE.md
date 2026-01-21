@@ -23,6 +23,10 @@
 
 * [`postfix_main_cf`](#postfix_main_cf): Modifies settings in the postfix main.cf configuration file.
 
+### Functions
+
+* [`postfix::alias_db`](#postfix--alias_db): Determine the postfix alias database file name based on the alias_database setting
+
 ### Data types
 
 * [`Postfix::InetProtocols`](#Postfix--InetProtocols): Allowed inet protocol settings
@@ -286,7 +290,7 @@ Data type: `Stdlib::Absolutepath`
 
 Path and name of the private SSL key file
 
-Default value: `"${app_pki_dir}/private/${facts['fqdn']}.pem"`
+Default value: `"${app_pki_dir}/private/${facts['networking']['fqdn']}.pem"`
 
 ##### <a name="-postfix--server--app_pki_cert"></a>`app_pki_cert`
 
@@ -294,7 +298,7 @@ Data type: `Stdlib::Absolutepath`
 
 Path and name of the public SSL certificate
 
-Default value: `"${app_pki_dir}/public/${facts['fqdn']}.pub"`
+Default value: `"${app_pki_dir}/public/${facts['networking']['fqdn']}.pub"`
 
 ##### <a name="-postfix--server--app_pki_ca_dir"></a>`app_pki_ca_dir`
 
@@ -364,6 +368,26 @@ The parameter to modify.
 
 The specific backend to use for this `postfix_main_cf` resource. You will seldom need to specify this --- Puppet will
 usually discover the appropriate provider for your platform.
+
+## Functions
+
+### <a name="postfix--alias_db"></a>`postfix::alias_db`
+
+Type: Puppet Language
+
+Determine the postfix alias database file name based on the alias_database setting
+
+#### `postfix::alias_db(Optional[String[1]] $alias_database)`
+
+The postfix::alias_db function.
+
+Returns: `Optional[String[1]]` The alias database file name or undef if not supported
+
+##### `alias_database`
+
+Data type: `Optional[String[1]]`
+
+The alias_database setting from postfix
 
 ## Data types
 

@@ -19,7 +19,6 @@ describe 'postfix::config' do
           it { is_expected.to contain_exec('postalias').that_subscribes_to('Concat[/etc/aliases]') }
           it { is_expected.to contain_concat('/etc/aliases') }
           it { is_expected.to contain_concat__fragment('main.alias') }
-          it { is_expected.to contain_file('/etc/aliases.db').that_subscribes_to('Exec[postalias]') }
 
           [
             '/etc/postfix',
@@ -49,17 +48,39 @@ describe 'postfix::config' do
           it { is_expected.to contain_file('/root/.muttrc').with({ 'replace' => false }) }
         end
 
+        context 'when postfix_alias_database fact is lmdb:/etc/aliases' do
+          let(:pre_condition) { 'include postfix' }
+          let(:facts) do
+            os_facts.merge({ postfix_alias_database: 'lmdb:/etc/aliases' })
+          end
+
+          it { is_expected.to compile.with_all_deps }
+
+          it { is_expected.to contain_file('/etc/aliases.lmdb').that_subscribes_to('Exec[postalias]') }
+        end
+
+        context 'when postfix_alias_database fact is not set' do
+          let(:pre_condition) { 'include postfix' }
+
+          it { is_expected.to compile.with_all_deps }
+
+          it { is_expected.not_to contain_file('/etc/aliases.db').that_subscribes_to('Exec[postalias]') }
+        end
+
         context 'postfix class with main_cf_hash set' do
           let(:pre_condition) do
             <<~EOM
               class { 'postfix':
                 main_cf_hash => {
                   'address_verify_cache_cleanup_interval' => {
-                    'value' => '5h'
+                    'value' => '5h',
                   },
                   'allow_mail_to_commands' => {
-                    'value' => [ 'alias', 'forward', 'include' ]
-                  }
+                    'value' => [ 'alias', 'forward', 'include' ],
+                  },
+                  'alias_database' => {
+                    'value' => 'lmdb:/etc/mail/aliases',
+                  },
                 }
               }
             EOM
@@ -69,6 +90,9 @@ describe 'postfix::config' do
           it { is_expected.to contain_postfix_main_cf('inet_protocols') }
           it { is_expected.to contain_postfix_main_cf('address_verify_cache_cleanup_interval').with_value('5h') }
           it { is_expected.to contain_postfix_main_cf('allow_mail_to_commands').with_value('alias,forward,include') }
+          it { is_expected.to contain_postfix_main_cf('alias_database').with_value('lmdb:/etc/mail/aliases') }
+
+          it { is_expected.to contain_file('/etc/mail/aliases.lmdb').that_subscribes_to('Exec[postalias]') }
         end
 
         context 'postfix class with main_cf_hash set with dupes' do

@@ -18,6 +18,13 @@ describe 'postfix' do
 
       # SIMP-4418
       it 'disables ipv6 on the system, but not in the kernel' do
+        result = on(host, 'type -p sysctl', acceptable_exit_codes: [0, 1])
+        skip 'sysctl command not found' if result.exit_code == 1
+
+        container_runtimes = ['docker', 'lxc', 'podman', 'crio', 'systemd-nspawn', 'container_other'].freeze
+        virtual = fact_on(host, 'virtual')
+        skip "sysctl ipv6 disable not applicable on #{virtual}" if container_runtimes.include?(virtual)
+
         on(host, 'sysctl -w net.ipv6.conf.all.disable_ipv6=1')
         on(host, 'sysctl -w net.ipv6.conf.default.disable_ipv6=1')
         on(host, 'sysctl -p')
@@ -37,15 +44,15 @@ describe 'postfix' do
       end
 
       it 'is installed' do
-        on(host, 'puppet resource package postfix') do
-          expect(stdout).not_to match(%r{ensure\s*=> 'absent'})
+        on(host, 'puppet resource package postfix') do |result|
+          expect(result.stdout).not_to match(%r{ensure\s*=> 'absent'})
         end
       end
 
       it 'is running' do
-        on(host, 'puppet resource service postfix') do
-          expect(stdout).to match(%r{ensure\s*=> 'running'})
-          expect(stdout).to match(%r{enable\s*=> 'true'})
+        on(host, 'puppet resource service postfix') do |result|
+          expect(result.stdout).to match(%r{ensure\s*=> 'running'})
+          expect(result.stdout).to match(%r{enable\s*=> 'true'})
         end
       end
     end

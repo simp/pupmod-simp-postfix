@@ -34,7 +34,21 @@ describe 'postfix' do
       end
 
       it 'sends mail to the test user' do
-        host.install_package('mailx')
+        os = fact_on(host, 'os')
+        mail = case os['family']
+               when 'RedHat'
+                 case os['release']['major'].to_i
+                 when 8
+                   'mailx'
+                 else
+                   's-nail'
+                 end
+               else
+                 nil
+               end
+
+        skip "mail command not found for #{os['family']}" if mail.nil?
+        host.install_package(mail)
         on(host, %(echo 'Test' | mail -s 'Test Message' #{test_user}))
       end
 

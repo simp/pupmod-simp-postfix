@@ -29,5 +29,4 @@ class postfix::config::root {
     replace => false,
     content => $_muttrc_content
   }
-
 }

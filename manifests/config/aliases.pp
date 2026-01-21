@@ -4,8 +4,7 @@ class postfix::config::aliases {
   assert_private()
 
   exec { 'postalias':
-    command     => '/usr/sbin/postalias /etc/aliases; \
-                    /usr/sbin/postalias /etc/aliases.db',
+    command     => '/usr/sbin/postalias /etc/aliases',
     subscribe   => Concat['/etc/aliases'],
     refreshonly => true,
   }
@@ -22,10 +21,20 @@ class postfix::config::aliases {
     content => template('postfix/aliases.erb')
   }
 
-  file { '/etc/aliases.db':
-    owner     => 'root',
-    group     => 'root',
-    mode      => '0644',
-    subscribe => Exec['postalias'],
+  if defined('$postfix::main_cf_hash') and $postfix::main_cf_hash =~ Hash {
+    $alias_database = $postfix::main_cf_hash.dig('alias_database', 'value')
+  } else {
+    $alias_database = undef
+  }
+  $db_file = postfix::alias_db($alias_database)
+
+  if $db_file {
+    file { $db_file:
+      ensure    => 'file',
+      owner     => 'root',
+      group     => 'root',
+      mode      => '0644',
+      subscribe => Exec['postalias'],
+    }
   }
 }

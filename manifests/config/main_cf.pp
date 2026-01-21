@@ -24,7 +24,7 @@ class postfix::config::main_cf {
   }
 
   postfix_main_cf { 'inet_protocols':
-    value => join($::postfix::inet_protocols, ',')
+    value => join($postfix::inet_protocols, ',')
   }
 
   # this is an array of postfix_main_cf resource that are managed elsewhere
@@ -40,7 +40,7 @@ class postfix::config::main_cf {
   ]
 
   # Add values to the postfix/main.cf file.
-  $::postfix::main_cf_hash.each |String $setting, $data| {
+  $postfix::main_cf_hash.each |String $setting, $data| {
     if ($setting in $_main_cf_blacklist) {
       notify { "postfix::main_cf_hash: ${setting} is already managed by this module, skipping.": }
     }
