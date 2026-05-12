@@ -1,3 +1,6 @@
+* Mon May 11 2026 Steven Pritchard <steve@sicura.us> - 7.0.0
+- Remove unmaintained Compliance Engine data
+
 * Thu Jan 15 2026 Steven Pritchard <steve@sicura.us> - 6.0.0
 - Fix noop run failure for postfix class (#80)
 - Support simp-simplib 5.x
