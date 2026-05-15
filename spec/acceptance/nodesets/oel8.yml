@@ -2,7 +2,8 @@
 HOSTS:
   oel8:
     platform: el-8-x86_64
-    box: generic/oracle8
+    box: oraclelinux/8
+    box_url: https://oracle.github.io/vagrant-projects/boxes/oraclelinux/8.json
     hypervisor: "<%= ENV.fetch('BEAKER_HYPERVISOR', 'vagrant') %>"
     family: oracle-linux-cloud/oracle-linux-8
     gce_machine_type: n1-standard-2

@@ -1,5 +1,6 @@
 * Mon May 11 2026 Steven Pritchard <steve@sicura.us> - 7.0.0
 - Remove unmaintained Compliance Engine data
+- Drop Puppet 7 support; require openvox >= 8 < 9
 
 * Thu Jan 15 2026 Steven Pritchard <steve@sicura.us> - 6.0.0
 - Fix noop run failure for postfix class (#80)
