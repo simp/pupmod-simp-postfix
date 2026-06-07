@@ -1,8 +1,7 @@
 require 'spec_helper'
 
-provider_class = Puppet::Type.type(:postfix_main_cf).provider(:ruby)
-
-describe provider_class do
+describe Puppet::Type.type(:postfix_main_cf).provider(:ruby) do
+  let(:provider_class) { described_class }
   let(:resource) { Puppet::Type::Postfix_main_cf.new(name: 'mail_owner', value: 'postfix') }
   let(:provider) { provider_class.new(resource) }
 
