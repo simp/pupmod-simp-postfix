@@ -6,7 +6,7 @@
   "license": "Apache-2.0",
   "source": "https://github.com/simp/pupmod-simp-postfix",
   "project_page": "https://github.com/simp/pupmod-simp-postfix",
-  "issues_url": "https://simp-project.atlassian.net",
+  "issues_url": "https://github.com/simp/pupmod-simp-postfix/issues",
   "tags": [
     "simp",
     "postfix",
@@ -36,7 +36,7 @@
       },
       {
         "name": "simp/iptables",
-        "version_requirement": ">= 6.5.3 < 8.0.0"
+        "version_requirement": ">= 6.5.3 < 9.0.0"
       }
     ]
   },
