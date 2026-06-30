@@ -10,9 +10,9 @@
 #
 # https://docs.github.com/en/actions/reference/events-that-trigger-workflows
 #
-
+---
 name: PR Tests
-on:
+'on':
   pull_request:
     types: [opened, reopened, synchronize]
 
@@ -127,10 +127,10 @@ jobs:
           - docker_oel8
           - docker_oel9
           - docker_oel10
-          # We can't test on RHEL because of subscription requirements
-          # - docker_rhel8
-          # - docker_rhel9
-          # - docker_rhel10
+          # RHEL UBI images lack a subscription, so packages like `mutt`
+          # cannot be installed in CI. RHEL is covered by its EL clones
+          # (Alma/CentOS/Oracle/Rocky); the docker_rhel* nodesets are kept
+          # for local testing against a subscribed host.
           - docker_rocky8
           - docker_rocky9
           - docker_rocky10
