@@ -9,11 +9,11 @@ This file provides guidance to AI agents when working with code in this reposito
 `postfix` class installs the `postfix` and `mutt` packages, creates the postfix
 users/groups, lays down `/etc/postfix` config files, writes `main.cf` settings,
 builds the `/etc/aliases` database, wires root's mail to `mutt` reading a
-Maildir, and runs the `postfix` service (`manifests/init.pp:42-48`). It is a
+Maildir, and runs the `postfix` service (`manifests/init.pp`). It is a
 full install/config/service module, not a thin package wrapper.
 
 Optionally, setting `postfix::enable_server: true` pulls in `postfix::server`
-(`init.pp:50-54`), which turns the host into an *externally facing* SMTP server:
+(`init.pp`), which turns the host into an *externally facing* SMTP server:
 it sets `inet_interfaces`, optionally opens the firewall via SIMP `iptables`,
 and optionally configures TLS (with PKI cert management and haveged entropy).
 
@@ -27,37 +27,37 @@ Puppet function (`postfix::alias_db`), one custom type/provider
 
 **Public API** (no `assert_private()` — consumed with `include` / as a define):
 
-- **`postfix` (`manifests/init.pp:34-61`)** — Public entry class. Parameters
-  (`init.pp:34-41`):
+- **`postfix` (`manifests/init.pp`)** — Public entry class. Parameters
+  (`init.pp`):
   - `$main_cf_hash` (`Hash`, **no default**) — required; supplied from module
-    data (`data/common.yaml:8-12`, deep-merged, see below). Hash of `main.cf`
+    data (`data/common.yaml`, deep-merged, see below). Hash of `main.cf`
     settings.
   - `$enable_server` (`Boolean`, default `false`) — gate for `postfix::server`
-    (`init.pp:50`).
+    (`init.pp`).
   - `$postfix_ensure` / `$mutt_ensure` (`String`) — each default
     `simplib::lookup('simp_options::package_ensure', { 'default_value' => 'installed' })`
-    (`init.pp:37-38`).
+    (`init.pp`).
   - `$inet_protocols` (`Postfix::InetProtocols`) — defaults to
     `fact('ipv6_enabled') ? { true => ['all'], default => ['ipv4'] }`
-    (`init.pp:39`).
+    (`init.pp`).
   - `$aliases` (`Optional[Hash]`, **no default**) — required; from module data
-    (`data/common.yaml:14` sets `postfix::aliases: {}`).
+    (`data/common.yaml` sets `postfix::aliases: {}`).
 
   It `include`s `postfix::install` → `postfix::config` ~> `postfix::service`
-  (ordered/notify, `init.pp:42-48`); conditionally `include`s `postfix::server`
-  notifying the service (`init.pp:50-54`); and declares a `postfix::alias`
-  resource for each entry of `$aliases` (`init.pp:56-60`).
-- **`postfix::server` (`manifests/server.pp:72-141`)** — Public class for the
-  externally facing server. `include`s `postfix` (`server.pp:88`). Does nothing
-  when `$inet_interfaces == ['localhost']` (`server.pp:91`). Otherwise sets
-  `postfix_main_cf { 'inet_interfaces' }` (`server.pp:92-94`); if `$firewall`,
+  (ordered/notify, `init.pp`); conditionally `include`s `postfix::server`
+  notifying the service (`init.pp`); and declares a `postfix::alias`
+  resource for each entry of `$aliases` (`init.pp`).
+- **`postfix::server` (`manifests/server.pp`)** — Public class for the
+  externally facing server. `include`s `postfix` (`server.pp`). Does nothing
+  when `$inet_interfaces == ['localhost']` (`server.pp`). Otherwise sets
+  `postfix_main_cf { 'inet_interfaces' }` (`server.pp`); if `$firewall`,
   asserts `simp/iptables`, `include`s `iptables`, and opens tcp 25 (plus 587 if
   `$enable_user_connect`) via `iptables::listen::tcp_stateful`
-  (`server.pp:96-110`); if `$enable_tls`, optionally asserts+includes `haveged`
-  (`server.pp:113-117`), sets the TLS `postfix_main_cf` settings
-  (`server.pp:119-129`), and if `$pki` runs `pki::copy { 'postfix' }`
-  notifying the service (`server.pp:131-138`).
-- **`postfix::alias` (`manifests/alias.pp:13-21`)** — Public define. Namevar is
+  (`server.pp`); if `$enable_tls`, optionally asserts+includes `haveged`
+  (`server.pp`), sets the TLS `postfix_main_cf` settings
+  (`server.pp`), and if `$pki` runs `pki::copy { 'postfix' }`
+  notifying the service (`server.pp`).
+- **`postfix::alias` (`manifests/alias.pp`)** — Public define. Namevar is
   the account; `$values` (`String[1]`) is the RHS. Creates a
   `concat::fragment` (`order => 2`) on `/etc/aliases` with
   `"${name}: ${values}\n"`.
@@ -65,50 +65,50 @@ Puppet function (`postfix::alias_db`), one custom type/provider
 **Private classes** (all call `assert_private()` — internal, not for direct
 `include`):
 
-- **`postfix::install` (`manifests/install.pp:6-36`, `assert_private()` at
-  `install.pp:7`)** — `group`s `postfix` (gid 89) and `postdrop` (gid 90),
+- **`postfix::install` (`manifests/install.pp`, `assert_private()` at
+  `install.pp`)** — `group`s `postfix` (gid 89) and `postdrop` (gid 90),
   `package`s `postfix`/`mutt` at the ensure params from the `postfix` class, and
   `user` `postfix` (uid 89). The packages are referenced via
   `$postfix::postfix_ensure` / `$postfix::mutt_ensure` (top-scope class vars).
-- **`postfix::config` (`manifests/config.pp:11-105`, `assert_private()` at
-  `config.pp:12`)** — `include`s the three `config::*` subclasses and manages the
+- **`postfix::config` (`manifests/config.pp`, `assert_private()` at
+  `config.pp`)** — `include`s the three `config::*` subclasses and manages the
   `/etc/postfix` directory tree, script/postmap/checks files, spool dirs, and the
   `/var/mail -> /var/spool/mail` symlink. Note: `master.cf`, the postmap files,
   and the checks files are created **empty** — the `content => template(...)`
-  lines are commented out (`config.pp:44,60-61,76`).
-- **`postfix::config::main_cf` (`manifests/config/main_cf.pp:16-59`,
-  `assert_private()` at `main_cf.pp:17`)** — manages `/etc/postfix/main.cf`, sets
+  lines are commented out (`config.pp`).
+- **`postfix::config::main_cf` (`manifests/config/main_cf.pp`,
+  `assert_private()` at `main_cf.pp`)** — manages `/etc/postfix/main.cf`, sets
   `postfix_main_cf { 'inet_protocols' }` from `$postfix::inet_protocols`
-  (`main_cf.pp:26-28`), then iterates `$postfix::main_cf_hash` declaring a
+  (`main_cf.pp`), then iterates `$postfix::main_cf_hash` declaring a
   `postfix_main_cf` per setting — **skipping** any key in the hard-coded
-  `$_main_cf_blacklist` (`main_cf.pp:32-40`) with a `notify` instead
-  (`main_cf.pp:44-46`). Array values are joined with commas (`main_cf.pp:48-53`).
-- **`postfix::config::aliases` (`manifests/config/aliases.pp:3-39`,
-  `assert_private()` at `aliases.pp:4`)** — builds `/etc/aliases` via `concat`
+  `$_main_cf_blacklist` (`main_cf.pp`) with a `notify` instead
+  (`main_cf.pp`). Array values are joined with commas (`main_cf.pp`).
+- **`postfix::config::aliases` (`manifests/config/aliases.pp`,
+  `assert_private()` at `aliases.pp`)** — builds `/etc/aliases` via `concat`
   (main fragment from `templates/aliases.erb`, `order => 1`), runs
   `exec { 'postalias' }` (`refreshonly`) on change, and manages the resolved
   alias DB file. It resolves the DB filename by calling the
   `postfix::alias_db()` function on the `alias_database` value dug out of
-  `$postfix::main_cf_hash` (`aliases.pp:24-38`).
-- **`postfix::config::root` (`manifests/config/root.pp:3-32`, `assert_private()`
-  at `root.pp:4`)** — adds `alias mail="mutt"` to `/root/.bashrc` via
-  `simp_file_line` (`root.pp:8-12`) and writes `/root/.muttrc` configured for a
-  Maildir (`replace => false`, `root.pp:25-31`).
-- **`postfix::service` (`manifests/service.pp:3-12`, `assert_private()` at
-  `service.pp:4`)** — `service { 'postfix': ensure => running, enable => true }`.
+  `$postfix::main_cf_hash` (`aliases.pp`).
+- **`postfix::config::root` (`manifests/config/root.pp`, `assert_private()`
+  at `root.pp`)** — adds `alias mail="mutt"` to `/root/.bashrc` via
+  `simp_file_line` (`root.pp`) and writes `/root/.muttrc` configured for a
+  Maildir (`replace => false`, `root.pp`).
+- **`postfix::service` (`manifests/service.pp`, `assert_private()` at
+  `service.pp`)** — `service { 'postfix': ensure => running, enable => true }`.
 
 **Supporting code:**
 
-- **`postfix::alias_db` function (`functions/alias_db.pp:4-31`)** — given the
+- **`postfix::alias_db` function (`functions/alias_db.pp`)** — given the
   `alias_database` setting (or, if `undef`, the `postfix_alias_database` fact,
-  `alias_db.pp:5`), parses `type:path` and returns the on-disk DB filename per
+  `alias_db.pp`), parses `type:path` and returns the on-disk DB filename per
   type: `hash`/`btree` → `.db`, `dbm`/`sdbm` → `.dir`, `cdb`/`lmdb` →
-  `.<type>` (`alias_db.pp:22-30`). Returns `undef` (with a `warning`) for a
+  `.<type>` (`alias_db.pp`). Returns `undef` (with a `warning`) for a
   malformed or unsupported value.
 - **`postfix_main_cf` type/provider (`lib/puppet/type/postfix_main_cf.rb`,
   `lib/puppet/provider/postfix_main_cf/ruby.rb`)** — native type that edits
   individual `main.cf` settings; `autonotify`s `Service['postfix']`
-  (`type/postfix_main_cf.rb:27-29`). This is the module's own type, not from a
+  (`type/postfix_main_cf.rb`). This is the module's own type, not from a
   dependency.
 - **`postfix_alias_database` fact (`lib/facter/postfix_alias_database.rb`)** —
   runs `postconf -h alias_database` (confined to hosts with `postconf`).
@@ -117,18 +117,18 @@ Puppet function (`postfix::alias_db`), one custom type/provider
 
 - **`main.cf` settings have two mutually-exclusive sources.** Settings managed
   directly by this module (`inet_protocols` and the `postfix::server` TLS
-  settings) are held in `$_main_cf_blacklist` (`main_cf.pp:32-40`) and are
+  settings) are held in `$_main_cf_blacklist` (`main_cf.pp`) and are
   **silently skipped** (only a `notify`) if you also try to set them via
   `postfix::main_cf_hash` — this prevents duplicate `postfix_main_cf` resource
-  declarations that would fail compilation (`init.pp:4-12`, `main_cf.pp:6-14`).
+  declarations that would fail compilation (`init.pp`, `main_cf.pp`).
 - **`master.cf`, postmap, and content-check files are created empty.** The
   `content => template(...)` lines in `postfix::config` are commented out
-  (`config.pp:44,60-61,76`); the `templates/*.erb` files exist but are **not
+  (`config.pp`); the `templates/*.erb` files exist but are **not
   wired in**. These resources only enforce ownership/mode, not content.
 - **`$main_cf_hash` and `$aliases` are required with no code default** — they
   come exclusively from module data. `data/common.yaml` provides
   `postfix::main_cf_hash` (with a `deep`/`--` knockout merge via `lookup_options`,
-  `common.yaml:1-12`) and `postfix::aliases: {}` (`common.yaml:14`). Without
+  `common.yaml`) and `postfix::aliases: {}` (`common.yaml`). Without
   data present, the `postfix` class will not compile.
 - **`postfix::server` `include`s `postfix`, and `postfix` conditionally
   `include`s `postfix::server`.** This is intentional (either entry point works),
@@ -136,7 +136,7 @@ Puppet function (`postfix::alias_db`), one custom type/provider
   *or* `postfix::server` is included directly.
 - **Firewall and haveged are OPTIONAL dependencies**, guarded by
   `simplib::assert_optional_dependency` + a boolean before any `include`
-  (`server.pp:96-99,113-116`). `simp/iptables` and `simp/haveged` are declared
+  (`server.pp`). `simp/iptables` and `simp/haveged` are declared
   only under `metadata.json` `simp.optional_dependencies`, not as hard runtime
   deps. Do not hard-`include` them.
 - **`simp/simp_options` is NOT a declared dependency** in `metadata.json`, yet
@@ -150,22 +150,22 @@ Puppet function (`postfix::alias_db`), one custom type/provider
 - **The alias DB filename is derived, not configured directly.**
   `postfix::config::aliases` digs `alias_database` out of `main_cf_hash`, falls
   back to the `postfix_alias_database` fact, and runs it through
-  `postfix::alias_db()` to compute the managed file (`aliases.pp:24-38`,
-  `alias_db.pp:5`).
+  `postfix::alias_db()` to compute the managed file (`aliases.pp`,
+  `alias_db.pp`).
 
 ## The `simp_options` / `simplib::lookup` seam
 
 This is the module's SIMP feature-toggle seam. All calls (across two manifests):
 
-| Line | Key | `default_value` |
+| File | Key | `default_value` |
 |------|-----|-----------------|
-| `manifests/init.pp:37` | `simp_options::package_ensure` | `'installed'` |
-| `manifests/init.pp:38` | `simp_options::package_ensure` | `'installed'` |
-| `manifests/server.pp:74` | `simp_options::firewall` | `false` |
-| `manifests/server.pp:75` | `simp_options::trusted_nets` | `['127.0.0.1']` |
-| `manifests/server.pp:80` | `simp_options::haveged` | `false` |
-| `manifests/server.pp:81` | `simp_options::pki` | `false` |
-| `manifests/server.pp:82` | `simp_options::pki::source` | `'/etc/pki/simp/x509'` |
+| `manifests/init.pp` | `simp_options::package_ensure` | `'installed'` |
+| `manifests/init.pp` | `simp_options::package_ensure` | `'installed'` |
+| `manifests/server.pp` | `simp_options::firewall` | `false` |
+| `manifests/server.pp` | `simp_options::trusted_nets` | `['127.0.0.1']` |
+| `manifests/server.pp` | `simp_options::haveged` | `false` |
+| `manifests/server.pp` | `simp_options::pki` | `false` |
+| `manifests/server.pp` | `simp_options::pki::source` | `'/etc/pki/simp/x509'` |
 
 Keep routing SIMP feature toggles through `simplib::lookup('simp_options::*', {
 'default_value' => ... })` with an explicit default rather than assuming
@@ -239,7 +239,7 @@ OracleLinux 8/9/10; Rocky 8/9/10; AlmaLinux 8/9/10.
   subscription requirements) whose final step runs
   `bundle exec rake beaker:suites[default,<node>]`. The nodes are Docker-based
   and the job runs them via **podman** (it starts `podman.socket` and points
-  `DOCKER_HOST` at it, `pr_tests.yml:148-154`); there is no explicit
+  `DOCKER_HOST` at it, `pr_tests.yml`); there is no explicit
   `BEAKER_HYPERVISOR` env in the workflow.
 
 ## Common commands
@@ -290,7 +290,7 @@ loads both `openvox` and `puppet` gems, defaulting to the `>= 8 < 9` range.
   `simplib::assert_optional_dependency` and a boolean check, as
   `postfix::server` does — don't hard-`include` optional modules.
 - When adding a `main.cf` setting that the module manages directly, add it to
-  `$_main_cf_blacklist` (`main_cf.pp:32-40`) so it can't collide with a
+  `$_main_cf_blacklist` (`main_cf.pp`) so it can't collide with a
   user-supplied `postfix::main_cf_hash` entry.
 - Keep module defaults (`main_cf_hash`, `aliases`) in `data/common.yaml`, not
   hard-coded in the manifests.
