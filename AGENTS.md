@@ -19,7 +19,7 @@ and optionally configures TLS (with PKI cert management and haveged entropy).
 
 ### Business logic
 
-Six classes (`postfix`, `postfix::install`, `postfix::config`,
+Eight classes (`postfix`, `postfix::install`, `postfix::config`,
 `postfix::config::main_cf`, `postfix::config::aliases`, `postfix::config::root`,
 `postfix::service`, `postfix::server`), one define (`postfix::alias`), one
 Puppet function (`postfix::alias_db`), one custom type/provider
