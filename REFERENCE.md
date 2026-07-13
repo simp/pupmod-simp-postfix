@@ -63,6 +63,8 @@ Hash of main.cf configuration parameters
   compile because of  duplicate `postfix_main_cf` resource
   declarations.
 
+Default value: `{ 'smtpd_client_restrictions' => { 'value' => ['permit_mynetworks', 'reject'] } }`
+
 ##### <a name="-postfix--enable_server"></a>`enable_server`
 
 Data type: `Boolean`
@@ -105,6 +107,8 @@ Example:
   postfix::aliases:
     'root': 'system.administrator@mail.mil'
     'foo.bar': 'fbar, fbar@example.com'
+
+Default value: `{}`
 
 ### <a name="postfix--config"></a>`postfix::config`
 

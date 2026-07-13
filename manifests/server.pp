@@ -99,7 +99,7 @@ class postfix::server (
       include 'iptables'
 
       $_dports = $enable_user_connect ? {
-        true    => [ 25,587 ],
+        true    => [25,587],
         default => 25
       }
 
