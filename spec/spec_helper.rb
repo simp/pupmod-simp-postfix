@@ -89,14 +89,15 @@ RSpec.configure do |c|
     production: {
       # :fqdn           => 'production.rspec.test.localdomain',
       path: '/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin',
-      concat_basedir: '/tmp'
-    }
+      concat_basedir: '/tmp',
+    },
   }
 
   c.mock_framework = :rspec
   c.mock_with :rspec
 
   c.module_path = File.join(fixture_path, 'modules')
+  c.manifest_dir = File.join(fixture_path, 'manifests') if c.respond_to?(:manifest_dir)
 
   c.hiera_config = File.join(fixture_path, 'hieradata', 'hiera.yaml')
 
