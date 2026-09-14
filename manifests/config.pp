@@ -11,7 +11,15 @@
 class postfix::config {
   assert_private()
 
-  include 'postfix::config::main_cf'
+  # 'contain' rather than 'include' so that the
+  # Class['postfix::install'] -> Class['postfix::config'] ~>
+  # Class['postfix::service'] chain in postfix reaches this class:
+  # the postfix_main_cf provider shells out to 'postconf', which the package
+  # provides, and a main.cf change has to restart the running daemon.
+  contain 'postfix::config::main_cf'
+
+  # Deliberately *not* contained: Exec['postalias'] should not be given a
+  # refresh edge to Service['postfix'].
   include 'postfix::config::aliases'
   include 'postfix::config::root'
 

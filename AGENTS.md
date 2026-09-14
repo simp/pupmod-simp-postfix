@@ -44,9 +44,11 @@ Puppet function (`postfix::alias_db`), one custom type/provider
     (`data/common.yaml` sets `postfix::aliases: {}`).
 
   It `include`s `postfix::install` → `postfix::config` ~> `postfix::service`
-  (ordered/notify, `init.pp`); conditionally `include`s `postfix::server`
-  notifying the service (`init.pp`); and declares a `postfix::alias`
-  resource for each entry of `$aliases` (`init.pp`).
+  (ordered/notify, `init.pp`) — a chain that also covers
+  `postfix::config::main_cf`, which `postfix::config` `contain`s (see
+  Gotchas); conditionally `include`s `postfix::server` notifying the service
+  (`init.pp`); and declares a `postfix::alias` resource for each entry of
+  `$aliases` (`init.pp`).
 - **`postfix::server` (`manifests/server.pp`)** — Public class for the
   externally facing server. `include`s `postfix` (`server.pp`). Does nothing
   when `$inet_interfaces == ['localhost']` (`server.pp`). Otherwise sets
@@ -121,6 +123,20 @@ Puppet function (`postfix::alias_db`), one custom type/provider
   **silently skipped** (only a `notify`) if you also try to set them via
   `postfix::main_cf_hash` — this prevents duplicate `postfix_main_cf` resource
   declarations that would fail compilation (`init.pp`, `main_cf.pp`).
+- **`postfix::config` `contain`s `main_cf` but only `include`s the other two
+  sub-classes.** Resources declared in an `include`d class are not contained in
+  the including class, so `Class['postfix::install'] -> Class['postfix::config']
+  ~> Class['postfix::service']` would otherwise cover only the resources
+  declared directly in `postfix::config`. `postfix::config::main_cf` needs both
+  ends of that chain — its `postfix_main_cf` resources shell out to `postconf`
+  (which the package provides) and a `main.cf` change has to restart the daemon
+  — so it is `contain`ed (`config.pp`). Nothing else pulls that class in
+  (it is `assert_private()` and referenced only from `postfix::config`), so
+  containment costs nothing here. `postfix::config::aliases` and
+  `postfix::config::root` stay `include`d on purpose: in particular,
+  `Exec['postalias']` should not be given a refresh edge to the service. If you
+  add resources that need either edge, put them in `postfix::config::main_cf`
+  or wire the edge up explicitly.
 - **`master.cf`, postmap, and content-check files are created empty.** The
   `content => template(...)` lines in `postfix::config` are commented out
   (`config.pp`); the `templates/*.erb` files exist but are **not
