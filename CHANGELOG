@@ -1,3 +1,9 @@
+* Mon Sep 14 2026 Mike Riddle <mike@sicura.us> - 7.0.3
+- `contain` `postfix::config::main_cf` from `postfix::config` so that the
+  install -> config ~> service chain reaches it: `main.cf` settings are no
+  longer applied before `postconf` exists, and a `main.cf` change restarts
+  the daemon (#151)
+
 * Mon Aug 24 2026 Steven Pritchard <steve@sicura.us> - 7.0.2
 - [puppetsync] Update metadata.json dependency ranges from the Forge
 
