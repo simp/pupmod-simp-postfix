@@ -248,11 +248,13 @@ Data type: `Boolean`
 
 Deprecated. If true, include haveged to assist with entropy generation.
 
+Defaults to `simp_options::haveged`, unless `rngd` is true.
+
 `simp/haveged` is an optional dependency and must be installed
 separately. This parameter will be removed in the next major release;
 use `rngd` instead.
 
-Default value: `simplib::lookup('simp_options::haveged', { 'default_value'      => false })`
+Default value: `(simplib::lookup('simp_options::haveged', { 'default_value' => false }) and !$rngd`
 
 ##### <a name="-postfix--server--rngd"></a>`rngd`
 

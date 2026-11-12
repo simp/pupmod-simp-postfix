@@ -34,6 +34,8 @@
 # @param haveged
 #   Deprecated. If true, include haveged to assist with entropy generation.
 #
+#   Defaults to `simp_options::haveged`, unless `rngd` is true.
+#
 #   `simp/haveged` is an optional dependency and must be installed
 #   separately. This parameter will be removed in the next major release;
 #   use `rngd` instead.
@@ -89,8 +91,8 @@ class postfix::server (
   Boolean                       $enable_tls              = true,
   Boolean                       $enforce_tls             = true,
   Postfix::ManCiphers           $mandatory_ciphers       = 'high',
-  Boolean                       $haveged                 = simplib::lookup('simp_options::haveged', { 'default_value'      => false }),
   Boolean                       $rngd                    = false,
+  Boolean                       $haveged                 = (simplib::lookup('simp_options::haveged', { 'default_value' => false }) and !$rngd),
   Variant[Enum['simp'],Boolean] $pki                     = simplib::lookup('simp_options::pki', { 'default_value'          => false }),
   String                        $app_pki_external_source = simplib::lookup('simp_options::pki::source', { 'default_value'  => '/etc/pki/simp/x509' }),
   Stdlib::Absolutepath          $app_pki_dir             = '/etc/pki/simp_apps/postfix/x509',
