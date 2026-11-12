@@ -15,7 +15,7 @@ full install/config/service module, not a thin package wrapper.
 Optionally, setting `postfix::enable_server: true` pulls in `postfix::server`
 (`init.pp`), which turns the host into an *externally facing* SMTP server:
 it sets `inet_interfaces`, optionally opens the firewall via SIMP `iptables`,
-and optionally configures TLS (with PKI cert management and haveged entropy).
+and optionally configures TLS (with PKI cert management and rngd entropy).
 
 ### Business logic
 
@@ -55,7 +55,7 @@ Puppet function (`postfix::alias_db`), one custom type/provider
   `postfix_main_cf { 'inet_interfaces' }` (`server.pp`); if `$firewall`,
   asserts `simp/iptables`, `include`s `iptables`, and opens tcp 25 (plus 587 if
   `$enable_user_connect`) via `iptables::listen::tcp_stateful`
-  (`server.pp`); if `$enable_tls`, optionally asserts+includes `haveged`
+  (`server.pp`); if `$enable_tls`, optionally asserts+includes `rngd` (or the deprecated `haveged`)
   (`server.pp`), sets the TLS `postfix_main_cf` settings
   (`server.pp`), and if `$pki` runs `pki::copy { 'postfix' }`
   notifying the service (`server.pp`).
@@ -150,9 +150,9 @@ Puppet function (`postfix::alias_db`), one custom type/provider
   `include`s `postfix::server`.** This is intentional (either entry point works),
   but it means the server params only take effect when `enable_server` is true
   *or* `postfix::server` is included directly.
-- **Firewall and haveged are OPTIONAL dependencies**, guarded by
+- **Firewall, rngd and the deprecated haveged are OPTIONAL dependencies**, guarded by
   `simplib::assert_optional_dependency` + a boolean before any `include`
-  (`server.pp`). `simp/iptables` and `simp/haveged` are declared
+  (`server.pp`). `simp/iptables`, `simp/rngd` and `simp/haveged` are declared
   only under `metadata.json` `simp.optional_dependencies`, not as hard runtime
   deps. Do not hard-`include` them.
 - **`simp/simp_options` is NOT a declared dependency** in `metadata.json`, yet
@@ -179,7 +179,7 @@ This is the module's SIMP feature-toggle seam. All calls (across two manifests):
 | `manifests/init.pp` | `simp_options::package_ensure` | `'installed'` |
 | `manifests/server.pp` | `simp_options::firewall` | `false` |
 | `manifests/server.pp` | `simp_options::trusted_nets` | `['127.0.0.1']` |
-| `manifests/server.pp` | `simp_options::haveged` | `false` |
+| `manifests/server.pp` | `simp_options::haveged` (deprecated) | `false` |
 | `manifests/server.pp` | `simp_options::pki` | `false` |
 | `manifests/server.pp` | `simp_options::pki::source` | `'/etc/pki/simp/x509'` |
 
@@ -202,7 +202,8 @@ Module dependencies (from `metadata.json`):
 Optional dependencies (from `metadata.json` `simp.optional_dependencies`),
 asserted at runtime only when the corresponding feature is enabled:
 
-- `simp/haveged` `>= 0.4.5 < 1.0.0` — included only when TLS + `$haveged`.
+- `simp/haveged` `>= 0.4.5 < 1.0.0` — included only when TLS + the deprecated `$haveged`.
+- `simp/rngd` `>= 0.2.0 < 1.0.0` — included only when TLS + `$rngd`.
 - `simp/iptables` `>= 6.5.3 < 8.0.0` — included only when `$firewall`.
 
 `simp/pki` is NOT a declared dependency (not runtime, not optional); the

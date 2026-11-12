@@ -171,6 +171,7 @@ The following parameters are available in the `postfix::server` class:
 * [`enforce_tls`](#-postfix--server--enforce_tls)
 * [`mandatory_ciphers`](#-postfix--server--mandatory_ciphers)
 * [`haveged`](#-postfix--server--haveged)
+* [`rngd`](#-postfix--server--rngd)
 * [`pki`](#-postfix--server--pki)
 * [`app_pki_external_source`](#-postfix--server--app_pki_external_source)
 * [`app_pki_dir`](#-postfix--server--app_pki_dir)
@@ -245,9 +246,26 @@ Default value: `'high'`
 
 Data type: `Boolean`
 
-If true, include haveged to assist with entropy generation.
+Deprecated. If true, include haveged to assist with entropy generation.
+
+`simp/haveged` is an optional dependency and must be installed
+separately. This parameter will be removed in the next major release;
+use `rngd` instead.
 
 Default value: `simplib::lookup('simp_options::haveged', { 'default_value'      => false })`
+
+##### <a name="-postfix--server--rngd"></a>`rngd`
+
+Data type: `Boolean`
+
+If true, include the `rngd` class to assist with entropy generation.
+Only used when `enable_tls` is true. `simp/rngd` is an optional
+dependency and must be installed separately.
+
+By default `rngd` only installs `rng-tools`; set `rngd::service_ensure`
+and `rngd::service_enable` to manage the service.
+
+Default value: `false`
 
 ##### <a name="-postfix--server--pki"></a>`pki`
 
@@ -406,3 +424,4 @@ Alias of `Array[Enum['all','ipv4','ipv6']]`
 Allowed mandatory ciphers
 
 Alias of `Enum['export', 'low', 'medium', 'high', 'null']`
+

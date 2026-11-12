@@ -126,6 +126,15 @@ describe 'postfix::server' do
           let(:params) { { haveged: true } }
 
           it { is_expected.to contain_class('haveged') }
+          it { is_expected.not_to contain_class('rngd') }
+        end
+
+        context 'with rngd => true' do
+          let(:params) { { rngd: true } }
+
+          it { is_expected.to compile.with_all_deps }
+          it { is_expected.to contain_class('rngd') }
+          it { is_expected.not_to contain_class('haveged') }
         end
       end
     end
