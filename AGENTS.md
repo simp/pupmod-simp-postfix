@@ -191,12 +191,12 @@ Keep routing SIMP feature toggles through `simplib::lookup('simp_options::*', {
 
 Module dependencies (from `metadata.json`):
 
-- `puppetlabs/concat` `>= 6.4.0 < 10.0.0` (provides `concat` / `concat::fragment`
+- `puppetlabs/concat` `>= 6.4.0 < 11.0.0` (provides `concat` / `concat::fragment`
   used to build `/etc/aliases`)
-- `simp/simplib` `>= 4.9.0 < 6.0.0` (provides `simplib::lookup`,
+- `simp/simplib` `>= 4.9.0 < 8.0.0` (provides `simplib::lookup`,
   `simplib::assert_optional_dependency`, `simp_file_line`, and the
   `Simplib::Netlist` type)
-- `puppetlabs/stdlib` `>= 8.0.0 < 10.0.0` (provides the `Stdlib::Absolutepath`
+- `puppetlabs/stdlib` `>= 9.2.0 < 11.0.0` (provides the `Stdlib::Absolutepath`
   type; `join()` is a built-in)
 
 Optional dependencies (from `metadata.json` `simp.optional_dependencies`),
@@ -204,7 +204,7 @@ asserted at runtime only when the corresponding feature is enabled:
 
 - `simp/haveged` `>= 0.4.5 < 1.0.0` — included only when TLS + the deprecated `$haveged`.
 - `simp/rngd` `>= 0.2.0 < 1.0.0` — included only when TLS + `$rngd`.
-- `simp/iptables` `>= 6.5.3 < 8.0.0` — included only when `$firewall`.
+- `simp/iptables` `>= 6.5.3 < 10.0.0` — included only when `$firewall`.
 
 `simp/pki` is NOT a declared dependency (not runtime, not optional); the
 `postfix::server` TLS branch calls `pki::copy` when `$pki` is set, so PKI must be
