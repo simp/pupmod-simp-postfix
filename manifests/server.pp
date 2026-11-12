@@ -32,7 +32,21 @@
 #   The ciphers that must be used for TLS connections.
 #
 # @param haveged
-#   If true, include haveged to assist with entropy generation.
+#   Deprecated. If true, include haveged to assist with entropy generation.
+#
+#   Defaults to `simp_options::haveged`, unless `rngd` is true.
+#
+#   `simp/haveged` is an optional dependency and must be installed
+#   separately. This parameter will be removed in the next major release;
+#   use `rngd` instead.
+#
+# @param rngd
+#   If true, include the `rngd` class to assist with entropy generation.
+#   Only used when `enable_tls` is true. `simp/rngd` is an optional
+#   dependency and must be installed separately.
+#
+#   By default `rngd` only installs `rng-tools`; set `rngd::service_ensure`
+#   and `rngd::service_enable` to manage the service.
 #
 # @param pki
 #   * If 'simp', include SIMP's pki module and use pki::copy to manage
@@ -77,7 +91,8 @@ class postfix::server (
   Boolean                       $enable_tls              = true,
   Boolean                       $enforce_tls             = true,
   Postfix::ManCiphers           $mandatory_ciphers       = 'high',
-  Boolean                       $haveged                 = simplib::lookup('simp_options::haveged', { 'default_value'      => false }),
+  Boolean                       $rngd                    = false,
+  Boolean                       $haveged                 = (simplib::lookup('simp_options::haveged', { 'default_value' => false }) and !$rngd),
   Variant[Enum['simp'],Boolean] $pki                     = simplib::lookup('simp_options::pki', { 'default_value'          => false }),
   String                        $app_pki_external_source = simplib::lookup('simp_options::pki::source', { 'default_value'  => '/etc/pki/simp/x509' }),
   Stdlib::Absolutepath          $app_pki_dir             = '/etc/pki/simp_apps/postfix/x509',
@@ -111,9 +126,16 @@ class postfix::server (
 
     if $enable_tls {
       if $haveged {
+        deprecation('postfix::server::haveged', "${module_name}: 'postfix::server::haveged' (and 'simp_options::haveged') is deprecated and will be removed in the next major release. Use 'postfix::server::rngd' instead.", false)
         simplib::assert_optional_dependency($module_name, 'simp/haveged')
 
         include 'haveged'
+      }
+
+      if $rngd {
+        simplib::assert_optional_dependency($module_name, 'simp/rngd')
+
+        include 'rngd'
       }
 
       if $enforce_tls {
