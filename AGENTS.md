@@ -215,7 +215,7 @@ runtime deps): `auditd`, `augeas_core`, `augeasproviders_core`,
 `augeasproviders_grub`, `firewalld`, `logrotate`, `pki`, `rsyslog`,
 `simp_firewalld`, `simp_options`, `systemd` (plus the runtime and optional deps).
 
-Runtime requirement (from `metadata.json` `requirements`): `openvox >= 8.0.0 < 9.0.0`.
+Runtime requirement (from `metadata.json` `requirements`): `openvox >= 8.0.0 < 10.0.0`.
 
 Supported OS matrix (from `metadata.json`): CentOS 9/10; RedHat 8/9/10;
 OracleLinux 8/9/10; Rocky 8/9/10; AlmaLinux 8/9/10.
