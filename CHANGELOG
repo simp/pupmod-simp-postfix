@@ -1,3 +1,6 @@
+* Mon Nov 23 2026 Steven Pritchard <steve@sicura.us> - 7.2.1
+- Allow simp/iptables 10.x
+
 * Thu Nov 12 2026 Steven Pritchard <steve@sicura.us> - 7.2.0
 - Add `postfix::server::rngd` to include the `rngd` class for entropy
   generation (requires the optional `simp/rngd` dependency)

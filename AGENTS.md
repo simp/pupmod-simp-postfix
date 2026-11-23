@@ -204,7 +204,7 @@ asserted at runtime only when the corresponding feature is enabled:
 
 - `simp/haveged` `>= 0.4.5 < 1.0.0` — included only when TLS + the deprecated `$haveged`.
 - `simp/rngd` `>= 0.2.0 < 1.0.0` — included only when TLS + `$rngd`.
-- `simp/iptables` `>= 6.5.3 < 10.0.0` — included only when `$firewall`.
+- `simp/iptables` `>= 6.5.3 < 11.0.0` — included only when `$firewall`.
 
 `simp/pki` is NOT a declared dependency (not runtime, not optional); the
 `postfix::server` TLS branch calls `pki::copy` when `$pki` is set, so PKI must be
